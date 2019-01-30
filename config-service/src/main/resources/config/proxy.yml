@@ -1,0 +1,25 @@
+server:
+  port: 8060
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.60.11:8061/eureka/
+
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+              
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
+  routes:
+    imagrid-server-svc:
+      path: /imagrid-server/**
+      serviceId: imagrid-server
+    imagrid-network-svc:
+      path: /imagrid-network/**
+      serviceId: imagrid-network
+    imagrid-authent-svc:
+      path: /imagrid-authent/**
+      serviceId: imagrid-authent
+

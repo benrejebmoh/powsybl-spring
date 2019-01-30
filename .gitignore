@@ -1,0 +1,5 @@
+/discovery-service/target/
+
+# IntelliJ
+/.idea
+*.iml
