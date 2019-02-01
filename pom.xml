@@ -14,17 +14,65 @@
     <modules>
         <module>discovery-service</module>
         <module>config-service</module>
+        <module>afs-storage-service</module>
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <java.version>1.8</java.version>
+
+        <maven.clean.version>3.1.0</maven.clean.version>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.install.version>2.5.2</maven.install.version>
+        <maven.resources.version>3.1.0</maven.resources.version>
+        <maven.site.version>3.7.1</maven.site.version>
+        <maven.surefire.version>2.22.0</maven.surefire.version>
+
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <springcloud.version>Finchley.SR1</springcloud.version>
         <jib.version>1.0.0</jib.version>
+
+        <powsyblcore.version>2.3.0-SNAPSHOT</powsyblcore.version>
     </properties>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.clean.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven.install.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resources.version}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
