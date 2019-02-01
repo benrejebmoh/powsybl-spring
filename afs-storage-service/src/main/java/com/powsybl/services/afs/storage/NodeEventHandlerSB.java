@@ -1,27 +1,30 @@
 package com.powsybl.services.afs.storage;
 
-import javax.websocket.EncodeException;
-import javax.websocket.RemoteEndpoint;
-import javax.websocket.Session;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.powsybl.afs.storage.ListenableAppStorage;
+import com.powsybl.afs.storage.events.AppStorageListener;
+import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.commons.json.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.standard.StandardWebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.powsybl.afs.storage.ListenableAppStorage;
-import com.powsybl.afs.storage.events.AppStorageListener;
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.afs.ws.server.utils.sb.NodeEventListEncoder;
+import javax.websocket.RemoteEndpoint;
+import javax.websocket.Session;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class NodeEventHandlerSB extends TextWebSocketHandler {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServerSB.class);
 
     private final AppDataBeanSB appDataBean;
     private final WebSocketContextSB webSocketContext;
+
+    private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
 
     public NodeEventHandlerSB(AppDataBeanSB appDataBean, WebSocketContextSB webSocketContext) {
         this.appDataBean = appDataBean;
@@ -29,7 +32,7 @@ public class NodeEventHandlerSB extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         String fileSystemName = session.getAttributes().get("fileSystemName").toString();
         LOGGER.debug("WebSocket session '{}' opened for file system '{}'", session.getId(), fileSystemName);
 
@@ -40,15 +43,14 @@ public class NodeEventHandlerSB extends TextWebSocketHandler {
                 RemoteEndpoint.Async remote = ((StandardWebSocketSession) session).getNativeSession().getAsyncRemote();
                 remote.setSendTimeout(1000);
                 try {
-                    String eventListEncode = new NodeEventListEncoder().encode(eventList);
+                    String eventListEncode = objectMapper.writeValueAsString(eventList);
                     remote.sendText(eventListEncode, result -> {
                         if (!result.isOK()) {
                             LOGGER.error(result.getException().toString(), result.getException());
                         }
                     });
-                } catch (EncodeException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
                 }
             } else {
                 webSocketContext.removeSession(((StandardWebSocketSession) session).getNativeSession());

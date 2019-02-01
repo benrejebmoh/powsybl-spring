@@ -1,28 +1,30 @@
 package com.powsybl.services.afs.storage;
 
-import javax.websocket.EncodeException;
-import javax.websocket.RemoteEndpoint;
-import javax.websocket.Session;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.powsybl.afs.AppFileSystem;
+import com.powsybl.afs.TaskEvent;
+import com.powsybl.afs.TaskListener;
+import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.commons.json.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.standard.StandardWebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.powsybl.afs.AppFileSystem;
-import com.powsybl.afs.TaskEvent;
-import com.powsybl.afs.TaskListener;
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.afs.ws.server.utils.sb.TaskEventEncoder;
+import javax.websocket.RemoteEndpoint;
+import javax.websocket.Session;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class TaskEventHandlerSB extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskEventHandlerSB.class);
 
     private final AppDataBeanSB appDataBean;
     private final WebSocketContextSB webSocketContext;
+
+    private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
 
     public TaskEventHandlerSB(AppDataBeanSB appDataBean, WebSocketContextSB webSocketContext) {
         this.appDataBean = appDataBean;
@@ -51,15 +53,14 @@ public class TaskEventHandlerSB extends TextWebSocketHandler {
                     RemoteEndpoint.Async remote = ((StandardWebSocketSession) session).getNativeSession().getAsyncRemote();
                     remote.setSendTimeout(1000);
                     try {
-                        String taskEventEncode = new TaskEventEncoder().encode(event);
+                        String taskEventEncode = objectMapper.writeValueAsString(event);
                         remote.sendText(taskEventEncode, result -> {
                             if (!result.isOK()) {
                                 LOGGER.error(result.getException().toString(), result.getException());
                             }
                         });
-                    } catch (EncodeException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
                     }
                 } else {
                     webSocketContext.removeSession(((StandardWebSocketSession) session).getNativeSession());

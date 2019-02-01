@@ -12,8 +12,6 @@ import com.powsybl.afs.storage.DefaultListenableAppStorage;
 import com.powsybl.afs.storage.ListenableAppStorage;
 import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -25,33 +23,19 @@ import java.util.Collections;
  */
 @Configuration
 @Profile("test")
-public class AppDataBeanMockSB extends AppDataBeanSB {
+public class AppDataBeanTestSB extends AppDataBeanSB {
 
     static final String TEST_FS_NAME = "mem";
-
-    @Autowired
-    private AppData appData;
-
-    @Configuration
-    static class Config {
-        @Bean
-        public AppData getAppData() {
-            return Mockito.mock(AppData.class);
-        }
-    }
 
     @PostConstruct
     @Override
     public void init() {
-        setAppDataSB();
+        appData = Mockito.mock(AppData.class);
         ListenableAppStorage storage = new DefaultListenableAppStorage(MapDbAppStorage.createHeap(TEST_FS_NAME));
 
         Mockito.when(appData.getRemotelyAccessibleStorage(TEST_FS_NAME))
                 .thenReturn(storage);
         Mockito.when(appData.getRemotelyAccessibleFileSystemNames())
                 .thenReturn(Collections.singletonList(TEST_FS_NAME));
-    }
-    private void setAppDataSB() {
-        super.appData = appData;
     }
 }

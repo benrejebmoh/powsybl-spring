@@ -1,9 +1,7 @@
 package com.powsybl.services.afs.storage;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.afs.ws.utils.AfsRestApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +16,18 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.afs.ws.utils.AfsRestApi;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Configuration
 @EnableWebSocket
 public class WebSocketServerSB   implements WebSocketConfigurer  {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServerSB.class);
 
-    @Autowired(required = true)
+    @Autowired
     private AppDataBeanSB appDataBean;
 
-    @Autowired(required = true)
+    @Autowired
     private WebSocketContextSB webSocketContext;
 
     @Override

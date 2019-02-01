@@ -36,7 +36,7 @@ import java.util.*;
 @ComponentScan(basePackageClasses = {AppDataBeanSB.class})
 public class AppStorageServerSB {
 
-    @Autowired(required = true)
+    @Autowired
     private AppDataBeanSB appDataBean;
 
     @RequestMapping(method = RequestMethod.GET, value = "fileSystems")

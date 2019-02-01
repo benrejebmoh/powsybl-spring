@@ -45,13 +45,13 @@ public class AppStorageServerSBTest extends AbstractAppStorageTest  {
     @Override
     protected ListenableAppStorage createStorage() {
         URI restUri = getRestUri();
-        RemoteAppStorageSt storage = new RemoteAppStorageSt(AppDataBeanMockSB.TEST_FS_NAME, restUri, "");
+        RemoteAppStorageSt storage = new RemoteAppStorageSt(AppDataBeanTestSB.TEST_FS_NAME, restUri, "");
         return new RemoteListenableAppStorageSt(storage, restUri);
     }
 
     @Test
     public void getFileSystemNamesTest() {
         List<String> fileSystemNames = RemoteAppStorageSt.getFileSystemNames(getRestUri(), "");
-        assertEquals(Collections.singletonList(AppDataBeanMockSB.TEST_FS_NAME), fileSystemNames);
+        assertEquals(Collections.singletonList(AppDataBeanTestSB.TEST_FS_NAME), fileSystemNames);
     }
 }

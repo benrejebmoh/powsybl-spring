@@ -88,8 +88,8 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-afs-ws-server-utils-sb</artifactId>
-            <version>${powsyblcore.version}</version>
+            <artifactId>powsybl-service-utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- test dependencies -->
