@@ -1,10 +1,9 @@
 package com.powsybl.services.afs.storage;
 
+import com.powsybl.afs.ws.server.utils.sb.UserAuthenticator;
+import com.powsybl.services.utils.UserProfile;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import com.powsybl.afs.ws.server.utils.UserAuthenticator;
-import com.powsybl.afs.ws.utils.UserProfile;
 
 @Configuration
 @Profile("test")

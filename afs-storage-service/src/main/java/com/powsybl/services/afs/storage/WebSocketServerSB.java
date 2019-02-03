@@ -1,7 +1,7 @@
 package com.powsybl.services.afs.storage;
 
 import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.afs.ws.utils.AfsRestApi;
+import com.powsybl.services.utils.AfsRestApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

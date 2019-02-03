@@ -1,11 +1,11 @@
 package com.powsybl.services.afs.storage;
 
+import com.powsybl.services.utils.AfsRestApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.powsybl.afs.ws.utils.AfsRestApi;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;

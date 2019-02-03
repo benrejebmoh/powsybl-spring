@@ -108,8 +108,9 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-afs-ws-storage-st</artifactId>
-            <version>${powsyblcore.version}</version>
+            <artifactId>powsybl-afs-storage-client</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
