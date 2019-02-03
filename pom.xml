@@ -33,9 +33,11 @@
         <maven.site.version>3.7.1</maven.site.version>
         <maven.surefire.version>2.22.0</maven.surefire.version>
 
+        <jackson.version>2.8.11.3</jackson.version>
+        <jib.version>1.0.0</jib.version>
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <springcloud.version>Finchley.SR1</springcloud.version>
-        <jib.version>1.0.0</jib.version>
+        <tyrus.version>1.13.1</tyrus.version>
 
         <powsyblcore.version>2.3.0-SNAPSHOT</powsyblcore.version>
     </properties>

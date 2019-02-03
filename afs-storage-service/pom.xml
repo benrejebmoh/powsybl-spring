@@ -13,6 +13,21 @@
     <artifactId>powsybl-afs-storage-service</artifactId>
     <name>AFS storage service</name>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>powsybl/${project.artifactId}</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,23 +83,6 @@
             <version>2.9.6</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.9.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.9.6</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.0.27.Final</version>
-            <classifier>linux-x86_64</classifier>
-            <scope>runtime</scope>
-        </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -107,7 +105,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>com.powsybl</groupId>
             <artifactId>powsybl-afs-storage-client</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
