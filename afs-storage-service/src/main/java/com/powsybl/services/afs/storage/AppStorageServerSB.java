@@ -31,7 +31,7 @@ import java.io.UncheckedIOException;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/rest/" + AfsRestApi.RESOURCE_ROOT + "/" + AfsRestApi.VERSION)
+@RequestMapping(value = "/rest/afs/" + AfsRestApi.VERSION)
 @Api(value = "/afs", tags = "afs")
 @ComponentScan(basePackageClasses = {AppDataBeanSB.class})
 public class AppStorageServerSB {

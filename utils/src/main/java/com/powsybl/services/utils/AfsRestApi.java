@@ -14,7 +14,5 @@ public final class AfsRestApi {
     private AfsRestApi() {
     }
 
-    public static final String RESOURCE_ROOT = "afs";
-
     public static final String VERSION = "v1";
 }

@@ -27,7 +27,7 @@ public class RemoteListenableAppStorageSt  extends ForwardingAppStorage implemen
         super(storage);
 
         URI wsUri = getWebSocketUri(restUri);
-        URI endPointUri = URI.create(wsUri + "/messages/" + AfsRestApi.RESOURCE_ROOT + "/" +
+        URI endPointUri = URI.create(wsUri + "/messages/afs/" +
                 AfsRestApi.VERSION + "/node_events/" + storage.getFileSystemName());
         LOGGER.debug("Connecting to node event websocket at {}", endPointUri);
 

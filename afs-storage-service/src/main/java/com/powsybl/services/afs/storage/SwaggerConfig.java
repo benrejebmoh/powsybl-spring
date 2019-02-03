@@ -36,9 +36,10 @@ public class SwaggerConfig {
                 .version(AfsRestApi.VERSION)
                 .build();
     }
+
     // Only select apis that matches the given Predicates.
     private Predicate<String> paths() {
         // Match all paths except /error
-        return Predicates.and(PathSelectors.regex("/rest/" + AfsRestApi.RESOURCE_ROOT + "/" + AfsRestApi.VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
+        return Predicates.and(PathSelectors.regex("/rest/afs/" + AfsRestApi.VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
     }
 }

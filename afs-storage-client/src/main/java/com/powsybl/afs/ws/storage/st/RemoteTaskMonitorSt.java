@@ -181,7 +181,7 @@ public class RemoteTaskMonitorSt implements TaskMonitor {
         Objects.requireNonNull(listener);
 
         URI wsUri = getWebSocketUri(restUri);
-        URI endPointUri = URI.create(wsUri + "/messages/" + AfsRestApi.RESOURCE_ROOT + "/" +
+        URI endPointUri = URI.create(wsUri + "/messages/afs/" +
                 AfsRestApi.VERSION + "/task_events/" + fileSystemName + "/" + listener.getProjectId());
 
         LOGGER.debug("Connecting to task event websocket for file system {} at {}", fileSystemName, endPointUri);

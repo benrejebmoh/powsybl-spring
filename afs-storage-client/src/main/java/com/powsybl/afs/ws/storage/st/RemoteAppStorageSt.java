@@ -77,6 +77,7 @@ public class RemoteAppStorageSt implements AppStorage {
     public RemoteAppStorageSt(String fileSystemName, URI baseUri) {
         this(fileSystemName, baseUri, "");
     }
+
     public RemoteAppStorageSt(String fileSystemName, URI baseUri, String token) {
         this.fileSystemName = Objects.requireNonNull(fileSystemName);
         this.token = token;
@@ -94,7 +95,7 @@ public class RemoteAppStorageSt implements AppStorage {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
 
         URI uri = webTargetTemp
@@ -165,7 +166,7 @@ public class RemoteAppStorageSt implements AppStorage {
         UriComponentsBuilder ub = UriComponentsBuilder
                 .fromUri(baseUri)
                 .pathSegment("rest")
-                .pathSegment(AfsRestApi.RESOURCE_ROOT)
+                .pathSegment("afs")
                 .pathSegment(AfsRestApi.VERSION);
         return ub;
     }

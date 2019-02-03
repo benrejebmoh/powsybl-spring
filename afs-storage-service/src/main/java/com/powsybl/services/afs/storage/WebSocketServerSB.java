@@ -33,8 +33,8 @@ public class WebSocketServerSB   implements WebSocketConfigurer  {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-            .addHandler(new NodeEventHandlerSB(appDataBean, webSocketContext),  "/messages/" + AfsRestApi.RESOURCE_ROOT + "/" + AfsRestApi.VERSION + "/node_events/{fileSystemName}")
-            .addHandler(new TaskEventHandlerSB(appDataBean, webSocketContext), "/messages/" + AfsRestApi.RESOURCE_ROOT + "/" + AfsRestApi.VERSION + "/task_events/{fileSystemName}/{projectId}")
+            .addHandler(new NodeEventHandlerSB(appDataBean, webSocketContext),  "/messages/afs/" + AfsRestApi.VERSION + "/node_events/{fileSystemName}")
+            .addHandler(new TaskEventHandlerSB(appDataBean, webSocketContext), "/messages/afs/" + AfsRestApi.VERSION + "/task_events/{fileSystemName}/{projectId}")
             .setAllowedOrigins("*")
             .addInterceptors(new UriTemplateHandshakeInterceptor());
     }
