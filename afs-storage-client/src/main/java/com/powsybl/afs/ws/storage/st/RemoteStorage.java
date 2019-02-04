@@ -195,10 +195,11 @@ public class RemoteStorage implements AppStorage {
                 .build()
                 .toUri();
         ResponseEntity<List<String>> response = client.exchange(
-                    uri,
-                    HttpMethod.GET,
-                    entity,
-                    new ParameterizedTypeReference<List<String>>() {});
+                uri,
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<String>>() {
+                });
         return readEntityIfOk(response);
     }
 
