@@ -4,5 +4,5 @@ import com.powsybl.afs.storage.json.AppStorageJsonModule;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class JsonProviderSB extends AppStorageJsonModule {
+public class JsonProvider extends AppStorageJsonModule {
 }

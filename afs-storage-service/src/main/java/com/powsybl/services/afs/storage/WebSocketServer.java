@@ -1,6 +1,6 @@
 package com.powsybl.services.afs.storage;
 
-import com.powsybl.server.commons.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +20,21 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketServerSB   implements WebSocketConfigurer  {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServerSB.class);
+public class WebSocketServer implements WebSocketConfigurer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
 
     @Autowired
-    private AppDataBeanSB appDataBean;
+    private AppDataBean appDataBean;
 
     @Autowired
-    private WebSocketContextSB webSocketContext;
+    private WebSocketContext webSocketContext;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-            .addHandler(new NodeEventHandlerSB(appDataBean, webSocketContext),  "/messages/afs/" + AppStorageServerSB.API_VERSION + "/node_events/{fileSystemName}")
-            .addHandler(new TaskEventHandlerSB(appDataBean, webSocketContext), "/messages/afs/" + AppStorageServerSB.API_VERSION + "/task_events/{fileSystemName}/{projectId}")
+            .addHandler(new NodeEventHandler(appDataBean, webSocketContext),  "/messages/afs/" + StorageServer.API_VERSION + "/node_events/{fileSystemName}")
+            .addHandler(new TaskEventHandler(appDataBean, webSocketContext), "/messages/afs/" + StorageServer.API_VERSION + "/task_events/{fileSystemName}/{projectId}")
             .setAllowedOrigins("*")
             .addInterceptors(new UriTemplateHandshakeInterceptor());
     }

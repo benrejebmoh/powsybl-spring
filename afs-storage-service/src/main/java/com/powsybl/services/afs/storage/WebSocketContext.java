@@ -21,9 +21,9 @@ import java.util.Set;
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
 @Component
-public class WebSocketContextSB {
+public class WebSocketContext {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketContextSB.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketContext.class);
 
     private final Set<Session> sessions = new HashSet<>();
 

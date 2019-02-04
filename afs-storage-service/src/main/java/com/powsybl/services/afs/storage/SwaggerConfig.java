@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(AppStorageServerSB.class.getPackage().getName()))
+                .apis(RequestHandlerSelectors.basePackage(StorageServer.class.getPackage().getName()))
                 .paths(paths())
                 .build();
     }
@@ -30,13 +30,13 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("AFS storage API")
                 .description("This is the documentation of AFS storage REST API")
-                .version(AppStorageServerSB.API_VERSION)
+                .version(StorageServer.API_VERSION)
                 .build();
     }
 
     // Only select apis that matches the given Predicates.
     private Predicate<String> paths() {
         // Match all paths except /error
-        return Predicates.and(PathSelectors.regex("/rest/afs/" + AppStorageServerSB.API_VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
+        return Predicates.and(PathSelectors.regex("/rest/afs/" + StorageServer.API_VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
     }
 }

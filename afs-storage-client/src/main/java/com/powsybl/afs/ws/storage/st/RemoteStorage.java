@@ -41,8 +41,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static com.powsybl.client.commons.ClientUtilsSt.checkOk;
-import static com.powsybl.client.commons.ClientUtilsSt.readEntityIfOk;
+import static com.powsybl.client.commons.ClientUtils.checkOk;
+import static com.powsybl.client.commons.ClientUtils.readEntityIfOk;
 
 
 
@@ -50,9 +50,9 @@ import static com.powsybl.client.commons.ClientUtilsSt.readEntityIfOk;
  * @author Ali Tahanout <ali.tahanout at rte-france.com>
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public class RemoteAppStorageSt implements AppStorage {
+public class RemoteStorage implements AppStorage {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteAppStorageSt.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteStorage.class);
 
     public static final String API_VERSION = "v1";
 
@@ -75,11 +75,11 @@ public class RemoteAppStorageSt implements AppStorage {
 
     private boolean closed = false;
 
-    public RemoteAppStorageSt(String fileSystemName, URI baseUri) {
+    public RemoteStorage(String fileSystemName, URI baseUri) {
         this(fileSystemName, baseUri, "");
     }
 
-    public RemoteAppStorageSt(String fileSystemName, URI baseUri, String token) {
+    public RemoteStorage(String fileSystemName, URI baseUri, String token) {
         this.fileSystemName = Objects.requireNonNull(fileSystemName);
         this.token = token;
 

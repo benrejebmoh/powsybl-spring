@@ -10,7 +10,7 @@ import com.powsybl.afs.storage.NodeDependency;
 import com.powsybl.afs.storage.NodeGenericMetadata;
 import com.powsybl.afs.storage.NodeInfo;
 import com.powsybl.afs.storage.buffer.*;
-import com.powsybl.server.commons.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBean;
 import com.powsybl.timeseries.DoubleDataChunk;
 import com.powsybl.timeseries.StringDataChunk;
 import com.powsybl.timeseries.TimeSeriesMetadata;
@@ -30,15 +30,15 @@ import java.io.UncheckedIOException;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/rest/afs/" + AppStorageServerSB.API_VERSION)
+@RequestMapping(value = "/rest/afs/" + StorageServer.API_VERSION)
 @Api(value = "/afs", tags = "afs")
-@ComponentScan(basePackageClasses = {AppDataBeanSB.class})
-public class AppStorageServerSB {
+@ComponentScan(basePackageClasses = {AppDataBean.class})
+public class StorageServer {
 
     public static final String API_VERSION = "v1";
 
     @Autowired
-    private AppDataBeanSB appDataBean;
+    private AppDataBean appDataBean;
 
     @RequestMapping(method = RequestMethod.GET, value = "fileSystems")
     @ApiOperation (value = "Get file system list", response = List.class)

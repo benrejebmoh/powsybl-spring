@@ -20,13 +20,13 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.*;
 
-import static com.powsybl.afs.ws.storage.st.RemoteAppStorageSt.createClient;
-import static com.powsybl.afs.ws.storage.st.RemoteAppStorageSt.getWebTarget;
-import static com.powsybl.afs.ws.storage.st.RemoteListenableAppStorageSt.getWebSocketUri;
+import static com.powsybl.afs.ws.storage.st.RemoteStorage.createClient;
+import static com.powsybl.afs.ws.storage.st.RemoteStorage.getWebTarget;
+import static com.powsybl.afs.ws.storage.st.RemoteListenableStorage.getWebSocketUri;
 
-public class RemoteTaskMonitorSt implements TaskMonitor {
+public class RemoteTaskMonitor implements TaskMonitor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteTaskMonitorSt.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteTaskMonitor.class);
 
     public static final String FILE_SYSTEM_NAME = "fileSystemName";
 
@@ -37,7 +37,7 @@ public class RemoteTaskMonitorSt implements TaskMonitor {
     private final RestTemplate client;
     private final UriComponentsBuilder webTarget;
 
-    public RemoteTaskMonitorSt(String fileSystemName, URI restUri, String token) {
+    public RemoteTaskMonitor(String fileSystemName, URI restUri, String token) {
         this.fileSystemName = Objects.requireNonNull(fileSystemName);
         this.restUri = Objects.requireNonNull(restUri);
         this.token = token;
@@ -171,7 +171,7 @@ public class RemoteTaskMonitorSt implements TaskMonitor {
 
         URI wsUri = getWebSocketUri(restUri);
         URI endPointUri = URI.create(wsUri + "/messages/afs/" +
-                RemoteAppStorageSt.API_VERSION + "/task_events/" + fileSystemName + "/" + listener.getProjectId());
+                RemoteStorage.API_VERSION + "/task_events/" + fileSystemName + "/" + listener.getProjectId());
 
         LOGGER.debug("Connecting to task event websocket for file system {} at {}", fileSystemName, endPointUri);
 

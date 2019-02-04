@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.afs.AppFileSystem;
 import com.powsybl.afs.TaskEvent;
 import com.powsybl.afs.TaskListener;
-import com.powsybl.server.commons.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBean;
 import com.powsybl.commons.json.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +18,16 @@ import javax.websocket.Session;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-public class TaskEventHandlerSB extends TextWebSocketHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskEventHandlerSB.class);
+public class TaskEventHandler extends TextWebSocketHandler {
 
-    private final AppDataBeanSB appDataBean;
-    private final WebSocketContextSB webSocketContext;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskEventHandler.class);
+
+    private final AppDataBean appDataBean;
+    private final WebSocketContext webSocketContext;
 
     private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
 
-    public TaskEventHandlerSB(AppDataBeanSB appDataBean, WebSocketContextSB webSocketContext) {
+    public TaskEventHandler(AppDataBean appDataBean, WebSocketContext webSocketContext) {
         this.appDataBean = appDataBean;
         this.webSocketContext = webSocketContext;
     }

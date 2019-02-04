@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 @Profile("default")
 @Component
-public class AppDataBeanSB {
+public class AppDataBean {
 
     protected AppData appData;
 

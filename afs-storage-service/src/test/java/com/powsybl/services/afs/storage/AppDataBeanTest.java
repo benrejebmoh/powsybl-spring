@@ -10,7 +10,7 @@ import com.powsybl.afs.AppData;
 import com.powsybl.afs.mapdb.storage.MapDbAppStorage;
 import com.powsybl.afs.storage.DefaultListenableAppStorage;
 import com.powsybl.afs.storage.ListenableAppStorage;
-import com.powsybl.server.commons.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBean;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -23,7 +23,7 @@ import java.util.Collections;
  */
 @Configuration
 @Profile("test")
-public class AppDataBeanTestSB extends AppDataBeanSB {
+public class AppDataBeanTest extends AppDataBean {
 
     static final String TEST_FS_NAME = "mem";
 

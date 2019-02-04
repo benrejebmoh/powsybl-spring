@@ -15,11 +15,11 @@ import static org.junit.Assert.*;
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public class RemoteListenableAppStorageTestSt {
+public class RemoteListenableStorageTest {
 
     @Test
     public void test() throws Exception {
-        assertEquals("ws://server:80/app", RemoteListenableAppStorageSt.getWebSocketUri(new URI("http://server:80/app")).toString());
-        assertEquals("wss://server:443/app", RemoteListenableAppStorageSt.getWebSocketUri(new URI("https://server:443/app")).toString());
+        assertEquals("ws://server:80/app", RemoteListenableStorage.getWebSocketUri(new URI("http://server:80/app")).toString());
+        assertEquals("wss://server:443/app", RemoteListenableStorage.getWebSocketUri(new URI("https://server:443/app")).toString());
     }
 }

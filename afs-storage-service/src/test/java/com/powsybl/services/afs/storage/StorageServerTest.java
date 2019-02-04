@@ -18,14 +18,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 import com.powsybl.afs.storage.AbstractAppStorageTest;
 import com.powsybl.afs.storage.ListenableAppStorage;
-import com.powsybl.afs.ws.storage.st.RemoteAppStorageSt;
-import com.powsybl.afs.ws.storage.st.RemoteListenableAppStorageSt;
+import com.powsybl.afs.ws.storage.st.RemoteStorage;
+import com.powsybl.afs.ws.storage.st.RemoteListenableStorage;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class AppStorageServerSBTest extends AbstractAppStorageTest  {
+public class StorageServerTest extends AbstractAppStorageTest  {
 
     @LocalServerPort
     private int port;
@@ -45,13 +45,13 @@ public class AppStorageServerSBTest extends AbstractAppStorageTest  {
     @Override
     protected ListenableAppStorage createStorage() {
         URI restUri = getRestUri();
-        RemoteAppStorageSt storage = new RemoteAppStorageSt(AppDataBeanTestSB.TEST_FS_NAME, restUri, "");
-        return new RemoteListenableAppStorageSt(storage, restUri);
+        RemoteStorage storage = new RemoteStorage(AppDataBeanTest.TEST_FS_NAME, restUri, "");
+        return new RemoteListenableStorage(storage, restUri);
     }
 
     @Test
     public void getFileSystemNamesTest() {
-        List<String> fileSystemNames = RemoteAppStorageSt.getFileSystemNames(getRestUri(), "");
-        assertEquals(Collections.singletonList(AppDataBeanTestSB.TEST_FS_NAME), fileSystemNames);
+        List<String> fileSystemNames = RemoteStorage.getFileSystemNames(getRestUri(), "");
+        assertEquals(Collections.singletonList(AppDataBeanTest.TEST_FS_NAME), fileSystemNames);
     }
 }

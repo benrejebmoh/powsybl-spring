@@ -21,9 +21,12 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ClientUtilsSt {
+public final class ClientUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientUtilsSt.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientUtils.class);
+
+    private ClientUtils() {
+    }
 
     public static void checkOk(ResponseEntity<?> response) {
         int status = response.getStatusCode().value();

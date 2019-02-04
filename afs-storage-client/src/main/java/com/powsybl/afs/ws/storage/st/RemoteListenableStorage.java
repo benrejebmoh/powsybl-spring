@@ -17,17 +17,18 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class RemoteListenableAppStorageSt  extends ForwardingAppStorage implements ListenableAppStorage  {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteListenableAppStorageSt.class);
+public class RemoteListenableStorage extends ForwardingAppStorage implements ListenableAppStorage {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteListenableStorage.class);
 
     private final WeakListenerList<AppStorageListener> listeners = new WeakListenerList<>();
 
-    public RemoteListenableAppStorageSt(RemoteAppStorageSt storage, URI restUri) {
+    public RemoteListenableStorage(RemoteStorage storage, URI restUri) {
         super(storage);
 
         URI wsUri = getWebSocketUri(restUri);
         URI endPointUri = URI.create(wsUri + "/messages/afs/" +
-                RemoteAppStorageSt.API_VERSION + "/node_events/" + storage.getFileSystemName());
+                RemoteStorage.API_VERSION + "/node_events/" + storage.getFileSystemName());
         LOGGER.debug("Connecting to node event websocket at {}", endPointUri);
 
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
