@@ -11,7 +11,6 @@ import com.powsybl.afs.storage.NodeGenericMetadata;
 import com.powsybl.afs.storage.NodeInfo;
 import com.powsybl.afs.storage.buffer.*;
 import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.services.utils.AfsRestApi;
 import com.powsybl.timeseries.DoubleDataChunk;
 import com.powsybl.timeseries.StringDataChunk;
 import com.powsybl.timeseries.TimeSeriesMetadata;
@@ -31,10 +30,12 @@ import java.io.UncheckedIOException;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "/rest/afs/" + AfsRestApi.VERSION)
+@RequestMapping(value = "/rest/afs/" + AppStorageServerSB.API_VERSION)
 @Api(value = "/afs", tags = "afs")
 @ComponentScan(basePackageClasses = {AppDataBeanSB.class})
 public class AppStorageServerSB {
+
+    public static final String API_VERSION = "v1";
 
     @Autowired
     private AppDataBeanSB appDataBean;

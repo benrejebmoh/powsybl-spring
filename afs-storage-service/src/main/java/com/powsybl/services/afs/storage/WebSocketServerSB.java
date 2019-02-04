@@ -1,7 +1,6 @@
 package com.powsybl.services.afs.storage;
 
 import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
-import com.powsybl.services.utils.AfsRestApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,8 @@ public class WebSocketServerSB   implements WebSocketConfigurer  {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-            .addHandler(new NodeEventHandlerSB(appDataBean, webSocketContext),  "/messages/afs/" + AfsRestApi.VERSION + "/node_events/{fileSystemName}")
-            .addHandler(new TaskEventHandlerSB(appDataBean, webSocketContext), "/messages/afs/" + AfsRestApi.VERSION + "/task_events/{fileSystemName}/{projectId}")
+            .addHandler(new NodeEventHandlerSB(appDataBean, webSocketContext),  "/messages/afs/" + AppStorageServerSB.API_VERSION + "/node_events/{fileSystemName}")
+            .addHandler(new TaskEventHandlerSB(appDataBean, webSocketContext), "/messages/afs/" + AppStorageServerSB.API_VERSION + "/task_events/{fileSystemName}/{projectId}")
             .setAllowedOrigins("*")
             .addInterceptors(new UriTemplateHandshakeInterceptor());
     }

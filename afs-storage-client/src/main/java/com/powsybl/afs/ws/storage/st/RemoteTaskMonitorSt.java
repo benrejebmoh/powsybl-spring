@@ -1,38 +1,27 @@
 package com.powsybl.afs.ws.storage.st;
 
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import com.powsybl.afs.ProjectFile;
+import com.powsybl.afs.TaskListener;
+import com.powsybl.afs.TaskMonitor;
+import com.powsybl.client.utils.UncheckedDeploymentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.websocket.ContainerProvider;
 import javax.websocket.DeploymentException;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.util.*;
 
-import com.powsybl.client.utils.UncheckedDeploymentException;
-import com.powsybl.services.utils.AfsRestApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import com.powsybl.afs.ProjectFile;
-import com.powsybl.afs.TaskListener;
-import com.powsybl.afs.TaskMonitor;
-
-import static com.powsybl.afs.ws.storage.st.RemoteAppStorageSt.getWebTarget;
 import static com.powsybl.afs.ws.storage.st.RemoteAppStorageSt.createClient;
+import static com.powsybl.afs.ws.storage.st.RemoteAppStorageSt.getWebTarget;
 import static com.powsybl.afs.ws.storage.st.RemoteListenableAppStorageSt.getWebSocketUri;
 
 public class RemoteTaskMonitorSt implements TaskMonitor {
@@ -182,7 +171,7 @@ public class RemoteTaskMonitorSt implements TaskMonitor {
 
         URI wsUri = getWebSocketUri(restUri);
         URI endPointUri = URI.create(wsUri + "/messages/afs/" +
-                AfsRestApi.VERSION + "/task_events/" + fileSystemName + "/" + listener.getProjectId());
+                RemoteAppStorageSt.API_VERSION + "/task_events/" + fileSystemName + "/" + listener.getProjectId());
 
         LOGGER.debug("Connecting to task event websocket for file system {} at {}", fileSystemName, endPointUri);
 

@@ -12,7 +12,6 @@ import com.powsybl.afs.storage.buffer.StorageChangeBuffer;
 import com.powsybl.afs.storage.json.AppStorageJsonModule;
 import com.powsybl.commons.exceptions.UncheckedInterruptedException;
 import com.powsybl.commons.io.ForwardingInputStream;
-import com.powsybl.services.utils.AfsRestApi;
 import com.powsybl.timeseries.DoubleDataChunk;
 import com.powsybl.timeseries.StringDataChunk;
 import com.powsybl.timeseries.TimeSeriesMetadata;
@@ -54,6 +53,8 @@ import static com.powsybl.client.utils.ClientUtilsSt.readEntityIfOk;
 public class RemoteAppStorageSt implements AppStorage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteAppStorageSt.class);
+
+    public static final String API_VERSION = "v1";
 
     private static final int BUFFER_MAXIMUM_CHANGE = 1000;
     private static final long BUFFER_MAXIMUM_SIZE = Math.round(Math.pow(2, 20)); // 1Mo
@@ -167,7 +168,7 @@ public class RemoteAppStorageSt implements AppStorage {
                 .fromUri(baseUri)
                 .pathSegment("rest")
                 .pathSegment("afs")
-                .pathSegment(AfsRestApi.VERSION);
+                .pathSegment(API_VERSION);
         return ub;
     }
 

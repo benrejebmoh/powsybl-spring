@@ -1,12 +1,9 @@
 package com.powsybl.services.afs.storage;
 
-import com.powsybl.services.utils.AfsRestApi;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,13 +30,13 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("AFS storage API")
                 .description("This is the documentation of AFS storage REST API")
-                .version(AfsRestApi.VERSION)
+                .version(AppStorageServerSB.API_VERSION)
                 .build();
     }
 
     // Only select apis that matches the given Predicates.
     private Predicate<String> paths() {
         // Match all paths except /error
-        return Predicates.and(PathSelectors.regex("/rest/afs/" + AfsRestApi.VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
+        return Predicates.and(PathSelectors.regex("/rest/afs/" + AppStorageServerSB.API_VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
     }
 }

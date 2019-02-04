@@ -6,7 +6,6 @@ import com.powsybl.afs.storage.events.AppStorageListener;
 import com.powsybl.client.utils.UncheckedDeploymentException;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 import com.powsybl.commons.util.WeakListenerList;
-import com.powsybl.services.utils.AfsRestApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +27,7 @@ public class RemoteListenableAppStorageSt  extends ForwardingAppStorage implemen
 
         URI wsUri = getWebSocketUri(restUri);
         URI endPointUri = URI.create(wsUri + "/messages/afs/" +
-                AfsRestApi.VERSION + "/node_events/" + storage.getFileSystemName());
+                RemoteAppStorageSt.API_VERSION + "/node_events/" + storage.getFileSystemName());
         LOGGER.debug("Connecting to node event websocket at {}", endPointUri);
 
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();

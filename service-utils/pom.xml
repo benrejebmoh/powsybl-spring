@@ -24,10 +24,5 @@
             <artifactId>powsybl-afs-core</artifactId>
             <version>${powsyblcore.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.powsybl</groupId>
-            <artifactId>utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 </project>

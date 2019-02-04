@@ -18,7 +18,6 @@
         <module>afs-storage-client</module>
         <module>service-utils</module>
         <module>client-utils</module>
-        <module>utils</module>
     </modules>
 
     <properties>
@@ -39,7 +38,7 @@
         <springcloud.version>Finchley.SR1</springcloud.version>
         <tyrus.version>1.13.1</tyrus.version>
 
-        <powsyblcore.version>2.3.0-SNAPSHOT</powsyblcore.version>
+        <powsyblcore.version>2.4.0-SNAPSHOT</powsyblcore.version>
     </properties>
 
     <build>
