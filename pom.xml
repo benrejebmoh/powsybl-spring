@@ -16,8 +16,8 @@
         <module>config-service</module>
         <module>afs-storage-service</module>
         <module>afs-storage-client</module>
-        <module>service-utils</module>
-        <module>client-utils</module>
+        <module>server-commons</module>
+        <module>client-commons</module>
     </modules>
 
     <properties>

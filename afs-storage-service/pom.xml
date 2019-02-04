@@ -86,7 +86,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-service-utils</artifactId>
+            <artifactId>powsybl-server-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -56,7 +56,7 @@
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-client-utils</artifactId>
+            <artifactId>powsybl-client-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
