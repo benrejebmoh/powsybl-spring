@@ -1,7 +1,7 @@
 package com.powsybl.services.afs.storage;
 
 import com.powsybl.afs.ws.server.utils.sb.UserAuthenticator;
-import com.powsybl.services.utils.UserProfile;
+import com.powsybl.commons.net.UserProfile;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 

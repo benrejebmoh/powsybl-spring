@@ -2,7 +2,7 @@ package com.powsybl.client.utils;
 
 import com.powsybl.afs.storage.AfsStorageException;
 import com.powsybl.afs.storage.json.AppStorageJsonModule;
-import com.powsybl.services.utils.UserProfile;
+import com.powsybl.commons.net.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;

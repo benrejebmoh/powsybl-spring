@@ -6,7 +6,7 @@
  */
 package com.powsybl.client.utils;
 
-import com.powsybl.services.utils.UserProfile;
+import com.powsybl.commons.net.UserProfile;
 
 import java.util.Objects;
 

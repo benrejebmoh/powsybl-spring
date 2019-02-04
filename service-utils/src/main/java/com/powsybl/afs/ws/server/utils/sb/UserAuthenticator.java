@@ -6,7 +6,7 @@
  */
 package com.powsybl.afs.ws.server.utils.sb;
 
-import com.powsybl.services.utils.UserProfile;
+import com.powsybl.commons.net.UserProfile;
 
 /**
  * @author Ali Tahanout <ali.tahanout at rte-france.com>
