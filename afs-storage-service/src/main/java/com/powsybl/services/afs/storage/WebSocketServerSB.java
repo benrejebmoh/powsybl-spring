@@ -1,6 +1,6 @@
 package com.powsybl.services.afs.storage;
 
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBeanSB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

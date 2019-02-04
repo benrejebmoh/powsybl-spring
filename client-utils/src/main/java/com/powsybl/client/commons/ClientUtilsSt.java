@@ -1,4 +1,4 @@
-package com.powsybl.client.utils;
+package com.powsybl.client.commons;
 
 import com.powsybl.afs.storage.AfsStorageException;
 import com.powsybl.afs.storage.json.AppStorageJsonModule;

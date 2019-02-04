@@ -3,7 +3,7 @@ package com.powsybl.services.afs.storage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.afs.storage.ListenableAppStorage;
 import com.powsybl.afs.storage.events.AppStorageListener;
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBeanSB;
 import com.powsybl.commons.json.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

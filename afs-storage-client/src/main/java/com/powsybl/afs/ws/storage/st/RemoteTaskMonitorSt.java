@@ -4,7 +4,7 @@ package com.powsybl.afs.ws.storage.st;
 import com.powsybl.afs.ProjectFile;
 import com.powsybl.afs.TaskListener;
 import com.powsybl.afs.TaskMonitor;
-import com.powsybl.client.utils.UncheckedDeploymentException;
+import com.powsybl.client.commons.UncheckedDeploymentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;

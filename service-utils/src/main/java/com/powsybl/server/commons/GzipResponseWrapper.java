@@ -1,4 +1,4 @@
-package com.powsybl.afs.ws.server.utils.sb;
+package com.powsybl.server.commons;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

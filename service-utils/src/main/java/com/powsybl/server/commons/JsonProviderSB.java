@@ -1,4 +1,4 @@
-package com.powsybl.afs.ws.server.utils.sb;
+package com.powsybl.server.commons;
 
 import com.powsybl.afs.storage.json.AppStorageJsonModule;
 import org.springframework.context.annotation.Configuration;

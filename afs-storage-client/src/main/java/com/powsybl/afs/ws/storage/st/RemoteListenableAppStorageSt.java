@@ -3,7 +3,7 @@ package com.powsybl.afs.ws.storage.st;
 import com.powsybl.afs.storage.ForwardingAppStorage;
 import com.powsybl.afs.storage.ListenableAppStorage;
 import com.powsybl.afs.storage.events.AppStorageListener;
-import com.powsybl.client.utils.UncheckedDeploymentException;
+import com.powsybl.client.commons.UncheckedDeploymentException;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 import com.powsybl.commons.util.WeakListenerList;
 import org.slf4j.Logger;

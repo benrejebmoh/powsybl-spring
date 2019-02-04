@@ -10,7 +10,7 @@ import com.powsybl.afs.storage.NodeDependency;
 import com.powsybl.afs.storage.NodeGenericMetadata;
 import com.powsybl.afs.storage.NodeInfo;
 import com.powsybl.afs.storage.buffer.*;
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBeanSB;
 import com.powsybl.timeseries.DoubleDataChunk;
 import com.powsybl.timeseries.StringDataChunk;
 import com.powsybl.timeseries.TimeSeriesMetadata;

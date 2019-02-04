@@ -10,7 +10,7 @@ import com.powsybl.afs.AppData;
 import com.powsybl.afs.mapdb.storage.MapDbAppStorage;
 import com.powsybl.afs.storage.DefaultListenableAppStorage;
 import com.powsybl.afs.storage.ListenableAppStorage;
-import com.powsybl.afs.ws.server.utils.sb.AppDataBeanSB;
+import com.powsybl.server.commons.AppDataBeanSB;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

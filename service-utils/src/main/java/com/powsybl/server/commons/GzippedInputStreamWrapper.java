@@ -1,4 +1,4 @@
-package com.powsybl.afs.ws.server.utils.sb;
+package com.powsybl.server.commons;
 
 import java.io.EOFException;
 import java.io.IOException;

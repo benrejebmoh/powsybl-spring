@@ -7,7 +7,7 @@
 package com.powsybl.afs.ws.storage.st;
 
 import com.powsybl.afs.storage.events.NodeEventList;
-import com.powsybl.client.utils.JacksonDecoder;
+import com.powsybl.client.commons.JacksonDecoder;
 
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>

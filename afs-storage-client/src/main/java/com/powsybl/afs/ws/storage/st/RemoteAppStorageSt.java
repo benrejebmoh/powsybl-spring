@@ -41,8 +41,8 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-import static com.powsybl.client.utils.ClientUtilsSt.checkOk;
-import static com.powsybl.client.utils.ClientUtilsSt.readEntityIfOk;
+import static com.powsybl.client.commons.ClientUtilsSt.checkOk;
+import static com.powsybl.client.commons.ClientUtilsSt.readEntityIfOk;
 
 
 
