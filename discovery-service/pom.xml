@@ -32,7 +32,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${springboot.version}</version>
                 <configuration>
-                    <mainClass>com.powsybl.services.discovery.DiscoveryServiceApplication</mainClass>
+                    <mainClass>com.powsybl.server.discovery.DiscoveryServerApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

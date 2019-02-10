@@ -1,4 +1,4 @@
-package com.powsybl.services.discovery;
+package com.powsybl.server.discovery;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -6,9 +6,9 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
 @EnableEurekaServer
-public class DiscoveryServiceApplication {
+public class DiscoveryServerApplication {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(DiscoveryServiceApplication.class).run(args);
+        new SpringApplicationBuilder(DiscoveryServerApplication.class).run(args);
     }
 }

@@ -27,7 +27,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.powsybl.services.config.ConfigServiceApplication</mainClass>
+                    <mainClass>com.powsybl.server.config.ConfigServerApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>
