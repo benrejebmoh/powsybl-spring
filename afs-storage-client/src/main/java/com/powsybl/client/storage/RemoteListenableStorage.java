@@ -1,4 +1,4 @@
-package com.powsybl.afs.ws.storage.st;
+package com.powsybl.client.storage;
 
 import com.powsybl.afs.storage.ForwardingAppStorage;
 import com.powsybl.afs.storage.ListenableAppStorage;

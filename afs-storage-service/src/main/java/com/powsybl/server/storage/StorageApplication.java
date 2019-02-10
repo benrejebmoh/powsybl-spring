@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

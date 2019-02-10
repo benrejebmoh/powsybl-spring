@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 import com.google.common.io.ByteStreams;
 import com.powsybl.afs.AfsException;

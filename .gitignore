@@ -1,4 +1,9 @@
+/afs-storage-client/target/
+/afs-storage-service/target/
+/client-commons/target/
+/config-service/target/
 /discovery-service/target/
+/server-commons/target/
 
 # IntelliJ
 /.idea

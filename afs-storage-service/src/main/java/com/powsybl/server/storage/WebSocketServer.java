@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 import com.powsybl.server.commons.AppDataBean;
 import org.slf4j.Logger;

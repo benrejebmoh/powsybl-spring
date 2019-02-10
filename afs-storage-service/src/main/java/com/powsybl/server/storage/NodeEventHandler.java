@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.afs.storage.ListenableAppStorage;

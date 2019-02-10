@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 
 import java.net.URI;
@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 import com.powsybl.afs.storage.AbstractAppStorageTest;
 import com.powsybl.afs.storage.ListenableAppStorage;
-import com.powsybl.afs.ws.storage.st.RemoteStorage;
-import com.powsybl.afs.ws.storage.st.RemoteListenableStorage;
+import com.powsybl.client.storage.RemoteStorage;
+import com.powsybl.client.storage.RemoteListenableStorage;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 
 @RunWith(SpringRunner.class)

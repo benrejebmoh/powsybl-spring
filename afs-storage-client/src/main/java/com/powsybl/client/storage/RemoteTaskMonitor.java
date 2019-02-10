@@ -1,4 +1,4 @@
-package com.powsybl.afs.ws.storage.st;
+package com.powsybl.client.storage;
 
 
 import com.powsybl.afs.ProjectFile;
@@ -20,9 +20,9 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.*;
 
-import static com.powsybl.afs.ws.storage.st.RemoteStorage.createClient;
-import static com.powsybl.afs.ws.storage.st.RemoteStorage.getWebTarget;
-import static com.powsybl.afs.ws.storage.st.RemoteListenableStorage.getWebSocketUri;
+import static com.powsybl.client.storage.RemoteStorage.createClient;
+import static com.powsybl.client.storage.RemoteStorage.getWebTarget;
+import static com.powsybl.client.storage.RemoteListenableStorage.getWebSocketUri;
 
 public class RemoteTaskMonitor implements TaskMonitor {
 

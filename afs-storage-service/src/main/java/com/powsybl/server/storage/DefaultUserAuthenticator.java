@@ -1,4 +1,4 @@
-package com.powsybl.services.afs.storage;
+package com.powsybl.server.storage;
 
 import com.powsybl.server.commons.UserAuthenticator;
 import com.powsybl.commons.net.UserProfile;
