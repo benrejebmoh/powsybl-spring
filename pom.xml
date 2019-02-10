@@ -12,12 +12,12 @@
     <name>Powsybl Spring</name>
 
     <modules>
-        <module>discovery-service</module>
-        <module>config-service</module>
-        <module>afs-storage-service</module>
-        <module>afs-storage-client</module>
-        <module>server-commons</module>
         <module>client-commons</module>
+        <module>client-storage</module>
+        <module>server-commons</module>
+        <module>server-config</module>
+        <module>server-discovery</module>
+        <module>server-storage</module>
     </modules>
 
     <properties>

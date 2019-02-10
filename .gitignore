@@ -1,9 +1,9 @@
-/afs-storage-client/target/
-/afs-storage-service/target/
 /client-commons/target/
+/client-storage/target/
 /config-service/target/
 /discovery-service/target/
 /server-commons/target/
+/server-storage/target/
 
 # IntelliJ
 /.idea

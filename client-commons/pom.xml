@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>powsybl-client-commons</artifactId>
-    <name>Client side commons</name>
+    <name>Client commons</name>
 
     <dependencies>
         <dependency>
