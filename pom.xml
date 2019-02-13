@@ -17,6 +17,7 @@
         <module>server-commons</module>
         <module>server-config</module>
         <module>server-discovery</module>
+        <module>server-network</module>
         <module>server-storage</module>
     </modules>
 
@@ -37,6 +38,7 @@
         <jib.version>1.0.0</jib.version>
         <springboot.version>2.0.4.RELEASE</springboot.version>
         <springcloud.version>Finchley.SR1</springcloud.version>
+        <springfox.version>2.6.1</springfox.version>
         <tyrus.version>1.13.1</tyrus.version>
 
         <powsyblcore.version>2.4.0-SNAPSHOT</powsyblcore.version>

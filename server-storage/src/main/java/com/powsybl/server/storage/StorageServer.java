@@ -32,7 +32,7 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/rest/afs/" + StorageServer.API_VERSION)
 @Api(value = "/afs", tags = "afs")
-@ComponentScan(basePackageClasses = {AppDataBean.class})
+@ComponentScan(basePackageClasses = {AppDataBean.class, StorageServer.class})
 public class StorageServer {
 
     public static final String API_VERSION = "v1";

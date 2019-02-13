@@ -1,4 +1,4 @@
-package com.powsybl.server.storage;
+package com.powsybl.server.network;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -14,13 +14,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class NetworkServerSwaggerConfig {
     @Bean
     public Docket produceApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(StorageServer.class.getPackage().getName()))
+                .apis(RequestHandlerSelectors.basePackage(NetworkServer.class.getPackage().getName()))
                 .paths(paths())
                 .build();
     }
@@ -28,15 +28,16 @@ public class SwaggerConfig {
     // Describe your apis
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("AFS storage API")
-                .description("This is the documentation of AFS storage REST API")
-                .version(StorageServer.API_VERSION)
+                .title("Network API")
+                .description("This is the documentation of network REST API")
+                .version(NetworkServer.API_VERSION)
                 .build();
     }
 
     // Only select apis that matches the given Predicates.
     private Predicate<String> paths() {
         // Match all paths except /error
-        return Predicates.and(PathSelectors.regex("/rest/afs/" + StorageServer.API_VERSION + ".*"), Predicates.not(PathSelectors.regex("/error.*")));
+        return Predicates.and(PathSelectors.regex("/rest/network/" + NetworkServer.API_VERSION + ".*"),
+                              Predicates.not(PathSelectors.regex("/error.*")));
     }
 }

@@ -43,6 +43,17 @@
             <artifactId>tyrus-container-jdk-client</artifactId>
             <version>${tyrus.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.powsybl</groupId>
