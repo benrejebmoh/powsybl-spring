@@ -6,20 +6,19 @@
  */
 package com.powsybl.client.storage;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
 import com.powsybl.afs.AfsException;
 import com.powsybl.afs.AppFileSystem;
-import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,19 +32,14 @@ public class AppDataClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppDataClient.class);
 
     @Autowired
-    private EurekaClient eurekaClient;
+    private DiscoveryClient eurekaClient;
 
     private Map<String, AppFileSystem> fileSystems;
 
     @PostConstruct
     public void init() {
-        InstanceInfo instInf = eurekaClient.getNextServerFromEureka("STORAGE", false);
-        URI baseUri;
-        try {
-            baseUri = new URI(instInf.getHomePageUrl());
-        } catch (URISyntaxException e) {
-            throw new UncheckedUriSyntaxException(e);
-        }
+        List<ServiceInstance> instances = eurekaClient.getInstances("STORAGE");
+        URI baseUri = instances.get(0).getUri();
         String token = null;
         fileSystems = RemoteStorage.getFileSystemNames(baseUri, token).stream()
                 .map(fileSystemName -> {
