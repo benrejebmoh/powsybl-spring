@@ -1,8 +1,8 @@
 /client-commons/target/
 /client-storage/target/
-/config-service/target/
-/discovery-service/target/
 /server-commons/target/
+/server-config/target/
+/server-discovery/target/
 /server-network/target/
 /server-storage/target/
 
