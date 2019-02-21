@@ -14,15 +14,18 @@
     <name>Server commons</name>
 
     <dependencies>
+        <!-- Compilation dependencies -->
+        <dependency>
+            <groupId>com.powsybl</groupId>
+            <artifactId>powsybl-afs-core</artifactId>
+        </dependency>
+
+        <!-- Provided dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-afs-core</artifactId>
-            <version>${powsyblcore.version}</version>
-        </dependency>
+
     </dependencies>
 </project>
