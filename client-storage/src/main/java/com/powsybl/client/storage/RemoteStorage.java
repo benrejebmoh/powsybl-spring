@@ -176,10 +176,12 @@ public class RemoteStorage implements AppStorage {
     public String getFileSystemName() {
         return fileSystemName;
     }
+
     @Override
     public boolean isRemote() {
         return true;
     }
+
     public static List<String> getFileSystemNames(URI baseUri, String token) {
         RestTemplate client = createClient();
         HttpHeaders headers = new HttpHeaders();
@@ -656,9 +658,11 @@ public class RemoteStorage implements AppStorage {
     public static class OutputStreamPut extends OutputStream {
         private ListenableFuture<ClientHttpResponse> response;
         private AsyncClientHttpRequest asyncClientHttpRequest;
+
         public OutputStreamPut(AsyncClientHttpRequest asyncClientHttpRequest) {
             this.asyncClientHttpRequest = asyncClientHttpRequest;
         }
+
         @Override
         public void write(byte[] b, int off, int len) {
             try {
@@ -667,12 +671,14 @@ public class RemoteStorage implements AppStorage {
                 throw new UncheckedIOException(e);
             }
         }
+
         @Override
         public void write(byte[] b) throws IOException {
             if (asyncClientHttpRequest != null) {
                 asyncClientHttpRequest.getBody().write(b);
             }
         }
+
         @Override
         public void write(int b) {
             try {
@@ -707,6 +713,7 @@ public class RemoteStorage implements AppStorage {
                 }
             }
         }
+
         private static AfsStorageException createServerErrorException(ClientHttpResponse response) throws IOException {
             return new AfsStorageException(response.getStatusText());
         }

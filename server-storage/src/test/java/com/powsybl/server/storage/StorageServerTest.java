@@ -1,6 +1,5 @@
 package com.powsybl.server.storage;
 
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -15,12 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.Assert.*;
 import com.powsybl.afs.storage.AbstractAppStorageTest;
 import com.powsybl.afs.storage.ListenableAppStorage;
 import com.powsybl.client.storage.RemoteStorage;
 import com.powsybl.client.storage.RemoteListenableStorage;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

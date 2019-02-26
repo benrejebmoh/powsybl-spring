@@ -57,6 +57,7 @@ public class WebSocketServer implements WebSocketConfigurer {
             }
             return true;
         }
+
         @Override
         public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
         }
