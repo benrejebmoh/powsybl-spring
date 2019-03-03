@@ -9,7 +9,7 @@ services:
       powsybl-network:
         ipv4_address: ${CONFIG_SERVER_IP}
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${CONFIG_SERVER_PORT}"]
+      test: curl -s http://localhost:${CONFIG_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
@@ -28,7 +28,7 @@ services:
       powsybl-network:
         ipv4_address: ${DISCOVERY_SERVER_IP}
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${DISCOVERY_SERVER_PORT}"]
+      test: curl -s http://localhost:${DISCOVERY_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
@@ -49,7 +49,7 @@ services:
       powsybl-network:
         ipv4_address: ${STORAGE_SERVER_IP}
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${STORAGE_SERVER_PORT}"]
+      test: curl -s http://localhost:${STORAGE_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
@@ -72,7 +72,7 @@ services:
       powsybl-network:
         ipv4_address: ${NETWORK_SERVER_IP}
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:${NETWORK_SERVER_PORT}"]
+      test: curl -s http://localhost:${NETWORK_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
