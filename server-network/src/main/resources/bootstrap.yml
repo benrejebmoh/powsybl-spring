@@ -3,4 +3,4 @@ spring:
     name: network
   cloud:
     config:
-      uri: http://localhost:8088
+      uri: http://${CONFIG_SERVER_IP}:${CONFIG_SERVER_PORT}

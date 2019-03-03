@@ -1,17 +1,16 @@
 server:
-  port: 8090
+  port: ${STORAGE_SERVER_PORT}
   servlet:
     context-path: /
-    
+
 eureka:
   instance:
-    hostname: localhost
-    port: 8061
+    hostname: ${STORAGE_SERVER_IP}
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+      defaultZone: http://${DISCOVERY_SERVER_IP}:${DISCOVERY_SERVER_PORT}/eureka/
 
 logging:
   pattern: 
