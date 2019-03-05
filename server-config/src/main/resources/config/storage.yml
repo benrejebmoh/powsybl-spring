@@ -11,6 +11,8 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://${DISCOVERY_SERVER_IP}:${DISCOVERY_SERVER_PORT}/eureka/
+    healthcheck:
+      enabled: true
 
 logging:
   pattern: 
