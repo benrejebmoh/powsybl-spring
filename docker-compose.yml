@@ -60,6 +60,9 @@ services:
       - DISCOVERY_SERVER_PORT
       - STORAGE_SERVER_IP
       - STORAGE_SERVER_PORT
+    volumes:
+      - $HOME/storage:/storage:Z
+      - $HOME/.itools:/root/.itools:Z
 
   network-server:
     image: powsybl/powsybl-server-network:latest

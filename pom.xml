@@ -156,6 +156,11 @@
             </dependency>
             <dependency>
                 <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-afs-mapdb</artifactId>
+                <version>${powsyblcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
                 <artifactId>powsybl-afs-storage-api</artifactId>
                 <version>${powsyblcore.version}</version>
             </dependency>
@@ -195,12 +200,7 @@
             </dependency>
 
             <!-- Test dependencies -->
-            <dependency>
-                <groupId>com.powsybl</groupId>
-                <artifactId>powsybl-afs-mapdb</artifactId>
-                <version>${powsyblcore.version}</version>
-                <scope>test</scope>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
