@@ -1,5 +1,11 @@
+server:
+  port: ${CONFIG_SERVER_PORT}
+
 spring:
   profiles:
     active: native
-server:
-  port: ${CONFIG_SERVER_PORT}
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: file:///config, file:///${user.home}/config

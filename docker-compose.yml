@@ -16,6 +16,8 @@ services:
     environment:
       - CONFIG_SERVER_IP
       - CONFIG_SERVER_PORT
+    volumes:
+      - $HOME/config:/config:Z
 
   discovery-server:
     image: powsybl/powsybl-server-discovery:latest
