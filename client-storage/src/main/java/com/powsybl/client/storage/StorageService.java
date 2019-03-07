@@ -33,11 +33,13 @@ public class StorageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 
+    private static final String STORAGE_SERVICE_ID = "STORAGE";
+
     @Autowired
-    private DiscoveryClient eurekaClient;
+    private DiscoveryClient client;
 
     private final Supplier<Map<String, AppFileSystem>> fileSystemsSupplier = Suppliers.memoize(() -> {
-        List<ServiceInstance> instances = eurekaClient.getInstances("STORAGE");
+        List<ServiceInstance> instances = client.getInstances(STORAGE_SERVICE_ID);
         if (instances.isEmpty()) {
             throw new PowsyblException("Cannot get storage instance");
         } else {
