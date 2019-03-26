@@ -14,6 +14,8 @@ import com.powsybl.server.commons.AppDataBean;
 import com.powsybl.commons.json.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.adapter.standard.StandardWebSocketSession;
@@ -23,17 +25,18 @@ import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+@Profile("test")
+@Component
+public class TaskEventHandlerTest extends TextWebSocketHandler {
 
-public class TaskEventHandler extends TextWebSocketHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskEventHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskEventHandlerTest.class);
 
     private final AppDataBean appDataBean;
-    private final WebSocketContext webSocketContext;
+    private final WebSocketContextTest webSocketContext;
 
     private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
 
-    public TaskEventHandler(AppDataBean appDataBean, WebSocketContext webSocketContext) {
+    public TaskEventHandlerTest(AppDataBean appDataBean, WebSocketContextTest webSocketContext) {
         this.appDataBean = appDataBean;
         this.webSocketContext = webSocketContext;
     }

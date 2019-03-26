@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.powsybl.server.storage;
+package com.powsybl.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +33,9 @@ public class WebSocketContext {
 
     public synchronized void removeSession(Session session) {
         sessions.remove(session);
+    }
+    public Set<Session> getSessions() {
+        return this.sessions;
     }
 
     @PreDestroy

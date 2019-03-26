@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+//import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
@@ -24,6 +26,7 @@ import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka(partitions = 1, topics = {"nodeEvent", "nodeInfo"}, controlledShutdown = true, ports = {9091})
 @ActiveProfiles("test")
 public class StorageServerTest extends AbstractAppStorageTest  {
 

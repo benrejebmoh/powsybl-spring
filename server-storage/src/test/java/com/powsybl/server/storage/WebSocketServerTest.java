@@ -6,14 +6,15 @@
  */
 package com.powsybl.server.storage;
 
-import com.powsybl.server.commons.AppDataBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+//import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -22,25 +23,23 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketServer implements WebSocketConfigurer {
+@Profile("test")
+public class WebSocketServerTest implements WebSocketConfigurer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServer.class);
-
-    @Autowired
-    private AppDataBean appDataBean;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServerTest.class);
 
     @Autowired
-    private WebSocketContext webSocketContext;
+    private NodeEventHandlerTest nodeEventHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry
-            .addHandler(new NodeEventHandler(appDataBean, webSocketContext),  "/messages/afs/" + StorageServer.API_VERSION + "/node_events/{fileSystemName}")
-            .addHandler(new TaskEventHandler(appDataBean, webSocketContext), "/messages/afs/" + StorageServer.API_VERSION + "/task_events/{fileSystemName}/{projectId}")
+            .addHandler(nodeEventHandler,  "/messages/afs/" + StorageServer.API_VERSION + "/node_events/{fileSystemName}")
             .setAllowedOrigins("*")
             .addInterceptors(new UriTemplateHandshakeInterceptor());
     }
@@ -62,3 +61,6 @@ public class WebSocketServer implements WebSocketConfigurer {
         }
     }
 }
+
+
+

@@ -38,7 +38,8 @@ public class AppDataClient {
 
     @PostConstruct
     public void init() {
-        List<ServiceInstance> instances = eurekaClient.getInstances("STORAGE");
+        //List<ServiceInstance> instances = eurekaClient.getInstances("STORAGE");
+        List<ServiceInstance> instances = eurekaClient.getInstances("LISTENER");
         URI baseUri = instances.get(0).getUri();
         String token = null;
         fileSystems = RemoteStorage.getFileSystemNames(baseUri, token).stream()

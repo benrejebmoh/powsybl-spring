@@ -1,14 +1,14 @@
 server:
-  port: 8090
+  port: 9080
   servlet:
     context-path: /
+
+kafka:
+  bootstrapAddress: localhost:9092
 
 spring:
   kafka:
     bootstrap-servers: localhost:9092
-
-kafka:
-  bootstrapAddress: localhost:9092
 
 eureka:
   instance:
@@ -23,3 +23,4 @@ eureka:
 logging:
   pattern: 
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    
