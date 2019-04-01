@@ -30,11 +30,13 @@ public class KafkaEmbeddedConfigTest {
     public ProducerFactory<Object, Object> producerFactory() {
         return new DefaultKafkaProducerFactory<>(KafkaTestUtils.producerProps(embeddedKafka), new StringSerializer(), new JsonSerializer());
     }
+
     @Bean
     public KafkaTemplate<Object, Object> getKafkaTemplate() {
         KafkaTemplate<Object, Object> kafkaTemplate = new KafkaTemplate<>(producerFactory());
         return kafkaTemplate;
     }
+
     @Bean
     public MessageListenerTest messageListener() {
         return new MessageListenerTest();

@@ -26,6 +26,7 @@ public class MessageListenerTest {
     private WebSocketContextTest webSocketContext;
 
     private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
+
     public MessageListenerTest() {
     }
 

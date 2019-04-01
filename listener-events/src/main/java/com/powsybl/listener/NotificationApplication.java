@@ -15,14 +15,17 @@ public class NotificationApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationApplication.class, args);
     }
+
     @Bean
     public MessageListenerKfk messageListener() {
         return new MessageListenerKfk();
     }
+
     @Bean
     public NodeEventWSHandler getNodeEventHandler() {
         return new NodeEventWSHandler();
     }
+
     @Bean
     public TaskEventHandlerWSTest getTaskEventHandlerWSTest() {
         return new TaskEventHandlerWSTest();

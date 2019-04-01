@@ -1,0 +1,98 @@
+version: '2.1'
+
+services:
+  config-server:
+    image: powsybl/powsybl-server-config:latest
+    ports:
+      - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
+    networks:
+      powsybl-network:
+        ipv4_address: ${CONFIG_SERVER_IP}
+    healthcheck:
+      test: curl -s http://localhost:${CONFIG_SERVER_PORT}/actuator/health 2>&1 | grep UP
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    environment:
+      - CONFIG_SERVER_IP
+      - CONFIG_SERVER_PORT
+    volumes:
+      - $HOME/config:/config:Z
+
+  discovery-server:
+    image: powsybl/powsybl-server-discovery:latest
+    depends_on:
+      config-server:
+        condition: service_healthy
+    ports:
+      - ${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}
+    networks:
+      powsybl-network:
+        ipv4_address: ${DISCOVERY_SERVER_IP}
+    healthcheck:
+      test: curl -s http://localhost:${DISCOVERY_SERVER_PORT}/actuator/health 2>&1 | grep UP
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    environment:
+      - CONFIG_SERVER_IP
+      - CONFIG_SERVER_PORT
+      - DISCOVERY_SERVER_IP
+      - DISCOVERY_SERVER_PORT
+
+  storage-server:
+    image: powsybl/powsybl-server-storage:latest
+    depends_on:
+      discovery-server:
+        condition: service_healthy
+    ports:
+      - ${STORAGE_SERVER_PORT}:${STORAGE_SERVER_PORT}
+    networks:
+      powsybl-network:
+        ipv4_address: ${STORAGE_SERVER_IP}
+    healthcheck:
+      test: curl -s http://localhost:${STORAGE_SERVER_PORT}/actuator/health 2>&1 | grep UP
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    environment:
+      - CONFIG_SERVER_IP
+      - CONFIG_SERVER_PORT
+      - DISCOVERY_SERVER_IP
+      - DISCOVERY_SERVER_PORT
+      - STORAGE_SERVER_IP
+      - STORAGE_SERVER_PORT
+    volumes:
+      - $HOME/storage:/storage:Z
+      - $HOME/.itools:/root/.itools:Z
+
+  network-server:
+    image: powsybl/powsybl-server-network:latest
+    depends_on:
+      storage-server:
+        condition: service_healthy
+    ports:
+      - ${NETWORK_SERVER_PORT}:${NETWORK_SERVER_PORT}
+    networks:
+      powsybl-network:
+        ipv4_address: ${NETWORK_SERVER_IP}
+    healthcheck:
+      test: curl -s http://localhost:${NETWORK_SERVER_PORT}/actuator/health 2>&1 | grep UP
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    environment:
+      - CONFIG_SERVER_IP
+      - CONFIG_SERVER_PORT
+      - DISCOVERY_SERVER_IP
+      - DISCOVERY_SERVER_PORT
+      - NETWORK_SERVER_IP
+      - NETWORK_SERVER_PORT
+
+networks:
+  powsybl-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24

@@ -1,5 +1,11 @@
-package com.powsybl.server.storage;
+/**
+ * Copyright (c) 2019, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 
+package com.powsybl.server.storage;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,15 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-//import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.Assert.*;
 import com.powsybl.afs.storage.AbstractAppStorageTest;
 import com.powsybl.afs.storage.ListenableAppStorage;
 import com.powsybl.client.storage.RemoteStorage;
 import com.powsybl.client.storage.RemoteListenableStorage;
 import com.powsybl.commons.exceptions.UncheckedUriSyntaxException;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

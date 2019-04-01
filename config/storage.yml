@@ -1,0 +1,19 @@
+server:
+  port: ${STORAGE_SERVER_PORT}
+  servlet:
+    context-path: /
+
+eureka:
+  instance:
+    hostname: ${STORAGE_SERVER_IP}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVER_IP}:${DISCOVERY_SERVER_PORT}/eureka/
+    healthcheck:
+      enabled: true
+
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"

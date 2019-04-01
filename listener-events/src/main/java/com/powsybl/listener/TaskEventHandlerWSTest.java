@@ -25,6 +25,7 @@ public class TaskEventHandlerWSTest extends TextWebSocketHandler {
 
         webSocketContext.addSession(((StandardWebSocketSession) session).getNativeSession());
     }
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         String fileSystemName = (String) session.getAttributes().get("fileSystemName");

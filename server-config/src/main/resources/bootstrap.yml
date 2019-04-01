@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 spring:
   profiles:
     active: native
 server:
   port: 8088
+=======
+server:
+  port: ${CONFIG_SERVER_PORT}
+
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: file:///config, file:///${user.home}/config
+>>>>>>> docker_compose

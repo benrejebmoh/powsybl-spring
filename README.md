@@ -1,7 +1,7 @@
 # powsybl-spring
 
 
-Dans les fichiers cloud-config 
+Dans les fichiers cloud-config : listener.yml 
 
 # Listener : adresse du consumer
 kafka:
@@ -11,6 +11,18 @@ kafka:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
+
+<pre>
+Dans le module listener bootstrap.yml
+
+spring:
+  application:
+    name: listener
+  cloud:
+    config:
+      uri: http://\<ip_config\>:\<port_config\>
+</pre>
+
     
 # Kafka
 

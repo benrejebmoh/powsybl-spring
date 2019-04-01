@@ -34,6 +34,7 @@ public class WebSocketContext {
     public synchronized void removeSession(Session session) {
         sessions.remove(session);
     }
+
     public Set<Session> getSessions() {
         return this.sessions;
     }
@@ -49,5 +50,4 @@ public class WebSocketContext {
         }
         sessions.clear();
     }
-
 }

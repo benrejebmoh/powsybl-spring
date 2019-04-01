@@ -13,8 +13,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-
-
 import com.powsybl.afs.storage.NodeInfo;
 import com.powsybl.afs.storage.events.NodeEvent;
 
@@ -44,6 +42,7 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
+
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, NodeEvent> nodeEventKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, NodeEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();

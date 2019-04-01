@@ -3,4 +3,8 @@ spring:
     name: discovery
   cloud:
     config:
+<<<<<<< HEAD
       uri: http://localhost:8088
+=======
+      uri: http://${CONFIG_SERVER_IP}:${CONFIG_SERVER_PORT}
+>>>>>>> docker_compose

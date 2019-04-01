@@ -6,12 +6,12 @@
  */
 package com.powsybl.client.storage;
 
-//import org.junit.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
-//import java.net.URI;
+import java.net.URI;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
@@ -20,7 +20,7 @@ public class RemoteListenableStorageTest {
 
     @Test
     public void test() throws Exception {
-        //Assert.assertEquals("ws://server:80/app", RemoteListenableStorage.getWebSocketUri(new URI("http://server:80/app")).toString());
-        //assertEquals("wss://server:443/app", RemoteListenableStorage.getWebSocketUri(new URI("https://server:443/app")).toString());
+        Assert.assertEquals("ws://server:80/app", RemoteListenableStorage.getWebSocketUri(new URI("http://server:80/app")).toString());
+        assertEquals("wss://server:443/app", RemoteListenableStorage.getWebSocketUri(new URI("https://server:443/app")).toString());
     }
 }

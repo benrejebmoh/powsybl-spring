@@ -22,12 +22,13 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.powsybl.afs.storage.NodeInfo;
 import com.powsybl.afs.storage.events.NodeEvent;
-//import org.apache.kafka.clients.admin.NewTopic;
+
 @Configuration
 @Profile("default")
 public class KafkaConfig {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
+
     @Bean
     public RecordMessageConverter converter2() {
         StringJsonMessageConverter converter = new StringJsonMessageConverter();
@@ -41,14 +42,17 @@ public class KafkaConfig {
         converter.setTypeMapper(typeMapper);
         return converter;
     }
+
     @Bean
     public NewTopic nodeInfo() {
         return new NewTopic("nodeInfo", 1, (short) 1);
     }
+
     @Bean
     public NewTopic nodeEvent() {
         return new NewTopic("nodeEvent", 1, (short) 1);
     }
+
     //@Bean
     public ProducerFactory<Object, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -57,6 +61,7 @@ public class KafkaConfig {
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
+
     @Bean
     public KafkaTemplate<Object, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());

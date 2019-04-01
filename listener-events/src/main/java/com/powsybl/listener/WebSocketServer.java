@@ -77,6 +77,7 @@ public class WebSocketServer implements WebSocketConfigurer {
             }
             return true;
         }
+
         @Override
         public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
         }
@@ -93,6 +94,7 @@ class MessageListenerKfk {
     private WebSocketContext webSocketContext;
 
     private final ObjectMapper objectMapper = JsonUtil.createObjectMapper();
+
     @KafkaListener(groupId = "imagrid", topics = {"nodeInfo", "nodeEvent"})
     public void listenTopic(@Payload String message,
             @Header(org.springframework.kafka.support.KafkaHeaders.RECEIVED_PARTITION_ID) int partition,

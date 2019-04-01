@@ -8,7 +8,6 @@ package com.powsybl.server.storage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -22,10 +21,9 @@ import java.util.Set;
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
 @Component
-@Profile("test")
-public class WebSocketContextTest {
+public class WebSocketContext {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketContextTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketContext.class);
 
     private final Set<Session> sessions = new HashSet<>();
 
@@ -49,7 +47,4 @@ public class WebSocketContextTest {
         sessions.clear();
     }
 
-    public Set<Session> getSessions() {
-        return this.sessions;
-    }
 }

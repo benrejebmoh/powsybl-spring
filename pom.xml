@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.powsybl</groupId>
@@ -33,14 +35,13 @@
         <maven.site.version>3.7.1</maven.site.version>
         <maven.surefire.version>2.22.0</maven.surefire.version>
 
-        <jackson.version>2.8.11.3</jackson.version>
         <jib.version>1.0.0</jib.version>
         <springboot.version>2.1.3.RELEASE</springboot.version>
-        <springcloud.version>Finchley.SR1</springcloud.version>
+        <springcloud.version>Greenwich.SR1</springcloud.version>
         <springfox.version>2.6.1</springfox.version>
         <tyrus.version>1.13.1</tyrus.version>
 
-        <powsyblcore.version>2.4.0-SNAPSHOT</powsyblcore.version>
+        <powsyblcore.version>2.5.0-SNAPSHOT</powsyblcore.version>
     </properties>
 
     <build>
@@ -96,6 +97,11 @@
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>${jib.version}</version>
+                    <configuration>
+                        <from>
+                            <image>openjdk:8</image>
+                        </from>
+                    </configuration>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -132,6 +138,49 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Compilation dependencies -->
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-afs-core</artifactId>
+                <version>${powsyblcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-afs-ext-base</artifactId>
+                <version>${powsyblcore.version}</version>
+                <exclusions>
+                    <!-- Workaround for Spring issue https://github.com/spring-projects/spring-integration/issues/2723 -->
+                    <exclusion>
+                        <groupId>xalan</groupId>
+                        <artifactId>xalan</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-afs-storage-api</artifactId>
+                <version>${powsyblcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-client</artifactId>
+                <version>${tyrus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-container-jdk-client</artifactId>
+                <version>${tyrus.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -146,6 +195,17 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Runtime dependencies -->
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-afs-mapdb</artifactId>
+                <version>${powsyblcore.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- Test dependencies -->
+
         </dependencies>
     </dependencyManagement>
 </project>
