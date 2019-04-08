@@ -1133,8 +1133,7 @@ public class RemoteStorage implements AppStorage {
         changeBuffer.addDoubleTimeSeriesData(nodeId, version, timeSeriesName, chunks);
     }
 
-    @Override
-    public Map<String, List<DoubleDataChunk>> getDoubleTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
+    private UriComponentsBuilder  getTimeSeriesWebTarget(String nodeId, Set<String> timeSeriesNames, int version) {
         Objects.requireNonNull(nodeId);
         Objects.requireNonNull(timeSeriesNames);
         TimeSeriesVersions.check(version);
@@ -1144,23 +1143,50 @@ public class RemoteStorage implements AppStorage {
                     fileSystemName, nodeId, timeSeriesNames, version);
         }
 
-        UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
+        return webTarget.cloneBuilder();
+    }
 
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
-
-        HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
-
-        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
-        URI uri = webTargetTemp
-                .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/double/{version}")
+    private URI  getTimeSeriesUri(Map<String, Object> params, UriComponentsBuilder webTargetTemp, String path) {
+        return webTargetTemp
+                .path(path)
                 .buildAndExpand(params)
                 .toUri();
+    }
+
+    @Override
+    public Map<String, List<DoubleDataChunk>> getDoubleTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
+
+        UriComponentsBuilder webTargetTemp = getTimeSeriesWebTarget(nodeId, timeSeriesNames, version);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
+        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
+        URI uri = getTimeSeriesUri(params, webTargetTemp, "fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/double/{version}");
+
         ResponseEntity<Map<String, List<DoubleDataChunk>>> response = client.exchange(
                 uri,
                 HttpMethod.POST,
                 entity,
                 new ParameterizedTypeReference<Map<String, List<DoubleDataChunk>>>() { }
                 );
+
+        return readEntityIfOk(response);
+    }
+
+    @Override
+    public Map<String, List<StringDataChunk>> getStringTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
+        UriComponentsBuilder webTargetTemp = getTimeSeriesWebTarget(nodeId, timeSeriesNames, version);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
+        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
+        URI uri = getTimeSeriesUri(params, webTargetTemp, "fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/string/{version}");
+
+        ResponseEntity<Map<String, List<StringDataChunk>>> response = client.exchange(
+                uri,
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<Map<String, List<StringDataChunk>> >() { }
+                );
+
         return readEntityIfOk(response);
     }
 
@@ -1176,37 +1202,6 @@ public class RemoteStorage implements AppStorage {
                     fileSystemName, nodeId, version, timeSeriesName, chunks);
         }
         changeBuffer.addStringTimeSeriesData(nodeId, version, timeSeriesName, chunks);
-    }
-
-    @Override
-    public Map<String, List<StringDataChunk>> getStringTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
-        Objects.requireNonNull(nodeId);
-        Objects.requireNonNull(timeSeriesNames);
-        TimeSeriesVersions.check(version);
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("getStringTimeSeriesData(fileSystemName={}, nodeId={}, timeSeriesNames={}, version={})",
-                    fileSystemName, nodeId, timeSeriesNames, version);
-        }
-
-        UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
-
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
-
-        HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
-
-        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
-        URI uri = webTargetTemp
-                .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/string/{version}")
-                .buildAndExpand(params)
-                .toUri();
-        ResponseEntity<Map<String, List<StringDataChunk>>> response = client.exchange(
-                uri,
-                HttpMethod.POST,
-                entity,
-                new ParameterizedTypeReference<Map<String, List<StringDataChunk>> >() { }
-                );
-        return readEntityIfOk(response);
     }
 
     @Override
