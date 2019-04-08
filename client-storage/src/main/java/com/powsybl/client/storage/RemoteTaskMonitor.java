@@ -107,8 +107,7 @@ public class RemoteTaskMonitor implements TaskMonitor {
                 uri,
                 HttpMethod.DELETE,
                 entity,
-                String.class
-                );
+                String.class);
     }
 
     @Override
@@ -135,8 +134,7 @@ public class RemoteTaskMonitor implements TaskMonitor {
                 uri,
                 HttpMethod.POST,
                 entity,
-                String.class
-                );
+                String.class);
     }
 
     @Override
