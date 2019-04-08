@@ -41,6 +41,7 @@ public class RemoteTaskMonitor implements TaskMonitor {
     private final Map<TaskListener, Session> sessions = new HashMap<>();
     private final RestTemplate client;
     private final UriComponentsBuilder webTarget;
+    private static final String TASK_PATH = "fileSystems/{fileSystemName}/tasks/{taskId}";
 
     public RemoteTaskMonitor(String fileSystemName, URI restUri, String token) {
         this.fileSystemName = Objects.requireNonNull(fileSystemName);
@@ -79,8 +80,7 @@ public class RemoteTaskMonitor implements TaskMonitor {
                     entity,
                     Task.class
                     );
-        Task task = response.getBody();
-        return task;
+        return response.getBody();
     }
 
     @Override
@@ -99,11 +99,11 @@ public class RemoteTaskMonitor implements TaskMonitor {
         params.put("taskId", id.toString());
 
         URI uri = webTargetTemp
-                .path("fileSystems/{fileSystemName}/tasks/{taskId}")
+                .path(TASK_PATH)
                 .buildAndExpand(params)
                 .toUri();
 
-        ResponseEntity<String> response = client.exchange(
+        client.exchange(
                 uri,
                 HttpMethod.DELETE,
                 entity,
@@ -127,11 +127,11 @@ public class RemoteTaskMonitor implements TaskMonitor {
         params.put("taskId", id.toString());
 
         URI uri = webTargetTemp
-                .path("fileSystems/{fileSystemName}/tasks/{taskId}")
+                .path(TASK_PATH)
                 .buildAndExpand(params)
                 .toUri();
 
-        ResponseEntity<String> response = client.exchange(
+        client.exchange(
                 uri,
                 HttpMethod.POST,
                 entity,
@@ -156,7 +156,7 @@ public class RemoteTaskMonitor implements TaskMonitor {
         params.put(FILE_SYSTEM_NAME, fileSystemName);
 
         URI uri = webTargetTemp
-                .path("fileSystems/{fileSystemName}/tasks/{taskId}")
+                .path(TASK_PATH)
                 .queryParam("projectId", projectId)
                 .buildAndExpand(params)
                 .toUri();

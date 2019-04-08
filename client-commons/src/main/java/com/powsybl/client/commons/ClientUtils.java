@@ -25,6 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 public final class ClientUtils {
@@ -46,7 +47,7 @@ public final class ClientUtils {
     }
 
     private static AfsStorageException createServerErrorException(ResponseEntity response) {
-        return new AfsStorageException(response.getBody().toString());
+        return new AfsStorageException(Objects.requireNonNull(response.getBody()).toString());
     }
 
     private static AfsStorageException createUnexpectedResponseStatus(HttpStatus status) {
@@ -56,7 +57,7 @@ public final class ClientUtils {
     public static <T> T readEntityIfOk(ResponseEntity<T> response) {
         int status = response.getStatusCode().value();
         if (status == HttpStatus.OK.value()) {
-            T entity = (T) response.getBody();
+            T entity = response.getBody();
             if (LOGGER.isTraceEnabled()) {
                 LOGGER.trace("    --> {}", entity);
             }
@@ -110,7 +111,7 @@ public final class ClientUtils {
         messageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON_UTF8, MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_STREAM_JSON));
         messageConverter.getObjectMapper().registerModule(new AppStorageJsonModule());
 
-        restTemplate.setMessageConverters(Arrays.asList(messageConverter));
+        restTemplate.setMessageConverters(Collections.singletonList(messageConverter));
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         restTemplate.getMessageConverters().add(1, new ByteArrayHttpMessageConverter());
         restTemplate.getMessageConverters().add(2, new ResourceHttpMessageConverter());
@@ -119,10 +120,9 @@ public final class ClientUtils {
     }
 
     static UriComponentsBuilder getWebTarget(URI baseUri) {
-        UriComponentsBuilder ub = UriComponentsBuilder
+        return UriComponentsBuilder
                 .fromUri(baseUri)
                 .pathSegment("rest")
                 .pathSegment("users");
-        return ub;
     }
 }

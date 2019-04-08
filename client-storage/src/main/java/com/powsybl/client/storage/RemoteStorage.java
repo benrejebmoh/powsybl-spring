@@ -155,7 +155,7 @@ public class RemoteStorage implements AppStorage {
         messageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON_UTF8, MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_STREAM_JSON));
         messageConverter.getObjectMapper().registerModule(new AppStorageJsonModule());
 
-        restTemplate.setMessageConverters(Arrays.asList(messageConverter));
+        restTemplate.setMessageConverters(Collections.singletonList(messageConverter));
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         restTemplate.getMessageConverters().add(1, new ByteArrayHttpMessageConverter());
         restTemplate.getMessageConverters().add(2, new ResourceHttpMessageConverter());
@@ -164,12 +164,11 @@ public class RemoteStorage implements AppStorage {
     }
 
     static UriComponentsBuilder getWebTarget(URI baseUri) {
-        UriComponentsBuilder ub = UriComponentsBuilder
+        return UriComponentsBuilder
                 .fromUri(baseUri)
                 .pathSegment("rest")
                 .pathSegment("afs")
                 .pathSegment(API_VERSION);
-        return ub;
     }
 
     @Override
@@ -222,7 +221,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/rootNode")
@@ -255,7 +254,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -293,7 +292,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(description, headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -330,7 +329,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(name, headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
 
@@ -367,7 +366,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
 
@@ -411,7 +410,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<NodeGenericMetadata> entity = new HttpEntity<>(genericMetadata, headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, parentNodeId);
         params.put("childName", name);
@@ -448,7 +447,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -481,7 +480,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         params.put("childName", name);
@@ -515,7 +514,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -553,7 +552,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(newParentNodeId, headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -588,7 +587,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         URI uri = webTargetTemp
@@ -620,7 +619,7 @@ public class RemoteStorage implements AppStorage {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
         headers.add(HttpHeaders.AUTHORIZATION, token);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         params.put("name", name);
@@ -635,7 +634,7 @@ public class RemoteStorage implements AppStorage {
                 MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_STREAM_JSON));
         messageConverter.getObjectMapper().registerModule(new AppStorageJsonModule());
 
-        aRestTemp.setMessageConverters(Arrays.asList(messageConverter));
+        aRestTemp.setMessageConverters(Collections.singletonList(messageConverter));
         aRestTemp.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         aRestTemp.getMessageConverters().add(1, new ByteArrayHttpMessageConverter());
         aRestTemp.getMessageConverters().add(2, new ResourceHttpMessageConverter());
@@ -739,7 +738,7 @@ public class RemoteStorage implements AppStorage {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
         params.put(NODE_ID, nodeId);
         params.put("name", name);
