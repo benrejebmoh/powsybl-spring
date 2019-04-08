@@ -44,8 +44,6 @@ import java.util.concurrent.ExecutionException;
 import static com.powsybl.client.commons.ClientUtils.checkOk;
 import static com.powsybl.client.commons.ClientUtils.readEntityIfOk;
 
-
-
 /**
  * @author Ali Tahanout <ali.tahanout at rte-france.com>
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
@@ -62,6 +60,7 @@ public class RemoteStorage implements AppStorage {
     private static final String NODE_ID = "nodeId";
     private static final String VERSION = "version";
     private static final String NODE_DATA_PATH = "fileSystems/{fileSystemName}/nodes/{nodeId}/data/{name}";
+    private static final String NAME = "name";
 
     private final RestTemplate client;
 
@@ -79,22 +78,41 @@ public class RemoteStorage implements AppStorage {
         this(fileSystemName, baseUri, "");
     }
 
+    private static HttpHeaders getHttpHeaders(String token, String contentEncoding, MediaType mediaType) {
+        HttpHeaders headers = getHttpHeaders(token, mediaType);
+        headers.add(HttpHeaders.CONTENT_ENCODING, contentEncoding);
+        return headers;
+    }
+
+    private static HttpHeaders getHttpHeadersTwo(String token, String acceptEncoding, MediaType mediaType) {
+        HttpHeaders headers = getHttpHeaders(token, mediaType);
+        headers.add(HttpHeaders.ACCEPT_ENCODING, acceptEncoding);
+        return headers;
+    }
+
+    private static HttpHeaders getHttpHeaders(String token, MediaType mediaType) {
+        HttpHeaders headers = getHttpHeaders(token);
+        headers.setContentType(mediaType);
+        headers.setAccept(Collections.singletonList(mediaType));
+        return headers;
+    }
+
+    private static HttpHeaders getHttpHeaders(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+        return headers;
+    }
+
     public RemoteStorage(String fileSystemName, URI baseUri, String token) {
         this.fileSystemName = Objects.requireNonNull(fileSystemName);
         this.token = token;
-
         this.webTarget = getWebTarget(baseUri);
+
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
         this.client = createClient();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
 
         Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
@@ -183,10 +201,7 @@ public class RemoteStorage implements AppStorage {
 
     public static List<String> getFileSystemNames(URI baseUri, String token) {
         RestTemplate client = createClient();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -204,6 +219,39 @@ public class RemoteStorage implements AppStorage {
         return readEntityIfOk(response);
     }
 
+    private Map<String, Object> getParamsWithNodeIdAndVersion(String nodeId, int version) {
+        Map<String, Object> params = getParamsWithnodeIdType2(nodeId);
+        params.put(VERSION, version);
+        return params;
+    }
+
+    private Map<String, Object> getParamsWithnodeIdType2(String nodeId) {
+        Map<String, Object> params;
+        params = new HashMap<>();
+        params.put(FILE_SYSTEM_NAME, fileSystemName);
+        params.put(NODE_ID, nodeId);
+        return params;
+    }
+
+    private Map<String, String> getParamsWithNodeIdAndName(String nodeId, String name) {
+        Map<String, String> params = getParamsWithNodeId(nodeId);
+        params.put(NAME, name);
+        return params;
+    }
+
+    private Map<String, String> getParamsWithNodeId(String nodeId) {
+        Map<String, String> params = getParams();
+        params.put(NODE_ID, nodeId);
+        return params;
+    }
+
+    private Map<String, String> getParams() {
+        Map<String, String> params;
+        params = new HashMap<>();
+        params.put(FILE_SYSTEM_NAME, fileSystemName);
+        return params;
+    }
+
     @Override
     public NodeInfo createRootNodeIfNotExists(String name, String nodePseudoClass) {
         Objects.requireNonNull(name);
@@ -213,16 +261,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
+        Map<String, String> params = getParams();
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/rootNode")
                 .queryParam("nodeName", name)
@@ -247,16 +290,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/writable")
                 .buildAndExpand(params)
@@ -283,18 +321,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        //headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(description, headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/description")
                 .buildAndExpand(params)
@@ -320,18 +351,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(name, headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
 
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/name")
@@ -357,18 +381,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
 
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/modificationTime")
@@ -401,18 +418,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<NodeGenericMetadata> entity = new HttpEntity<>(genericMetadata, headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, parentNodeId);
+        Map<String, String> params = getParamsWithNodeId(parentNodeId);
         params.put("childName", name);
 
         URI uri = webTargetTemp
@@ -440,16 +450,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/children")
                 .buildAndExpand(params)
@@ -473,16 +478,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         params.put("childName", name);
 
         URI uri = webTargetTemp
@@ -507,16 +507,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/parent")
                 .buildAndExpand(params)
@@ -543,18 +538,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
-        //headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(newParentNodeId, headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/parent")
                 .buildAndExpand(params)
@@ -580,16 +568,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        //headers.setContentType(MediaType.APPLICATION_JSON);
-        //headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}")
                 .buildAndExpand(params)
@@ -614,15 +597,9 @@ public class RemoteStorage implements AppStorage {
 
         LOGGER.debug("writeBinaryData(fileSystemName={}, nodeId={}, name={})", fileSystemName, nodeId, name);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_OCTET_STREAM);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
 
         AsyncRestTemplate aRestTemp = new AsyncRestTemplate();
         MappingJackson2HttpMessageConverter messageConverter = aRestTemp.getMessageConverters().stream()
@@ -731,17 +708,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_OCTET_STREAM);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
         URI uri = webTargetTemp
                 .path(NODE_DATA_PATH)
                 .buildAndExpand(params)
@@ -778,17 +749,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
         URI uri = webTargetTemp
                 .path(NODE_DATA_PATH)
                 .buildAndExpand(params)
@@ -810,16 +775,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/data")
                 .buildAndExpand(params)
@@ -842,17 +802,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
 
         URI uri = webTargetTemp
                 .path(NODE_DATA_PATH)
@@ -880,18 +834,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
-        headers.add(HttpHeaders.CONTENT_ENCODING, "gzip");
+        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
         params.put("toNodeId", toNodeId);
 
         URI uri = webTargetTemp
@@ -916,17 +863,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
 
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/dependencies/{name}")
@@ -949,10 +890,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -981,10 +919,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -1018,17 +953,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put("name", name);
+        Map<String, String> params = getParamsWithNodeIdAndName(nodeId, name);
         params.put("toNodeId", toNodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/dependencies/{name}/{toNodeId}")
@@ -1060,17 +989,11 @@ public class RemoteStorage implements AppStorage {
         LOGGER.debug("getTimeSeriesNames(fileSystemName={}, nodeId={})", fileSystemName, nodeId);
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/name")
                 .buildAndExpand(params)
@@ -1093,16 +1016,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         params.put("timeSeriesName", timeSeriesName);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/{timeSeriesName}")
@@ -1128,17 +1046,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/metadata")
                 .buildAndExpand(params)
@@ -1160,16 +1072,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/versions")
                 .buildAndExpand(params)
@@ -1192,16 +1099,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         params.put("timeSeriesName", timeSeriesName);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/{timeSeriesName}/versions")
@@ -1244,18 +1146,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put(VERSION, version);
+        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/double/{version}")
                 .buildAndExpand(params)
@@ -1296,18 +1191,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.ACCEPT_ENCODING, "gzip");
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
-        params.put(VERSION, version);
+        Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/string/{version}")
                 .buildAndExpand(params)
@@ -1332,16 +1220,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, Object> params = getParamsWithnodeIdType2(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries")
                 .buildAndExpand(params)
@@ -1363,16 +1246,11 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(HttpHeaders.AUTHORIZATION, token);
+        HttpHeaders headers = getHttpHeaders(token, MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        Map<String, String> params = new HashMap<>();
-        params.put(FILE_SYSTEM_NAME, fileSystemName);
-        params.put(NODE_ID, nodeId);
+        Map<String, String> params = getParamsWithNodeId(nodeId);
         URI uri = webTargetTemp
                 .path("fileSystems/{fileSystemName}/nodes/{nodeId}")
                 .buildAndExpand(params)
@@ -1400,6 +1278,5 @@ public class RemoteStorage implements AppStorage {
     public void close() {
         flush();
         closed = true;
-        //client.close();
     }
 }

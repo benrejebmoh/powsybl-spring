@@ -55,18 +55,12 @@ public final class ClientUtils {
     }
 
     public static <T> T readEntityIfOk(ResponseEntity<T> response) {
-        int status = response.getStatusCode().value();
-        if (status == HttpStatus.OK.value()) {
-            T entity = response.getBody();
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("    --> {}", entity);
-            }
-            return entity;
-        } else if (status == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-            throw createServerErrorException(response);
-        } else {
-            throw createUnexpectedResponseStatus(response.getStatusCode());
+        checkOk(response);
+        T entity = response.getBody();
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("    --> {}", entity);
         }
+        return entity;
     }
 
     public static UserSession authenticate(URI baseUri, String login, String password) {
