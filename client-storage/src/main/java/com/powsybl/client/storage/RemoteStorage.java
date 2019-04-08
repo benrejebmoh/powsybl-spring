@@ -78,13 +78,13 @@ public class RemoteStorage implements AppStorage {
         this(fileSystemName, baseUri, "");
     }
 
-    private static HttpHeaders getHttpHeaders(String token, String contentEncoding, MediaType mediaType) {
+    private static HttpHeaders getHttpHeadersWithContentEncoding(String token, String contentEncoding, MediaType mediaType) {
         HttpHeaders headers = getHttpHeaders(token, mediaType);
         headers.add(HttpHeaders.CONTENT_ENCODING, contentEncoding);
         return headers;
     }
 
-    private static HttpHeaders getHttpHeadersTwo(String token, String acceptEncoding, MediaType mediaType) {
+    private static HttpHeaders getHttpHeadersWithAcceptEncoding(String token, String acceptEncoding, MediaType mediaType) {
         HttpHeaders headers = getHttpHeaders(token, mediaType);
         headers.add(HttpHeaders.ACCEPT_ENCODING, acceptEncoding);
         return headers;
@@ -112,7 +112,7 @@ public class RemoteStorage implements AppStorage {
 
         this.client = createClient();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         Map<String, String> params = new HashMap<>();
         params.put(FILE_SYSTEM_NAME, fileSystemName);
@@ -261,7 +261,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -321,7 +321,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(description, headers);
 
@@ -351,7 +351,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(name, headers);
 
@@ -381,7 +381,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -418,7 +418,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<NodeGenericMetadata> entity = new HttpEntity<>(genericMetadata, headers);
 
@@ -538,7 +538,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.TEXT_PLAIN);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.TEXT_PLAIN);
 
         HttpEntity<String> entity = new HttpEntity<>(newParentNodeId, headers);
 
@@ -834,7 +834,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeaders(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithContentEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -989,7 +989,7 @@ public class RemoteStorage implements AppStorage {
         LOGGER.debug("getTimeSeriesNames(fileSystemName={}, nodeId={})", fileSystemName, nodeId);
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithAcceptEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -1046,7 +1046,7 @@ public class RemoteStorage implements AppStorage {
 
         UriComponentsBuilder webTargetTemp = webTarget.cloneBuilder();
 
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithAcceptEncoding(token, "gzip", MediaType.APPLICATION_JSON);
 
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
 
@@ -1157,7 +1157,7 @@ public class RemoteStorage implements AppStorage {
     public Map<String, List<DoubleDataChunk>> getDoubleTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
 
         UriComponentsBuilder webTargetTemp = getTimeSeriesWebTarget(nodeId, timeSeriesNames, version);
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithAcceptEncoding(token, "gzip", MediaType.APPLICATION_JSON);
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
         Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
         URI uri = getTimeSeriesUri(params, webTargetTemp, "fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/double/{version}");
@@ -1175,7 +1175,7 @@ public class RemoteStorage implements AppStorage {
     @Override
     public Map<String, List<StringDataChunk>> getStringTimeSeriesData(String nodeId, Set<String> timeSeriesNames, int version) {
         UriComponentsBuilder webTargetTemp = getTimeSeriesWebTarget(nodeId, timeSeriesNames, version);
-        HttpHeaders headers = getHttpHeadersTwo(token, "gzip", MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHttpHeadersWithAcceptEncoding(token, "gzip", MediaType.APPLICATION_JSON);
         HttpEntity<Set<String>> entity = new HttpEntity<>(timeSeriesNames, headers);
         Map<String, Object> params = getParamsWithNodeIdAndVersion(nodeId, version);
         URI uri = getTimeSeriesUri(params, webTargetTemp, "fileSystems/{fileSystemName}/nodes/{nodeId}/timeSeries/string/{version}");
