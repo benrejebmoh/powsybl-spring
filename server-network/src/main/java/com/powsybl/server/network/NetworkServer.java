@@ -9,7 +9,7 @@ package com.powsybl.server.network;
 import com.powsybl.afs.ProjectFile;
 import com.powsybl.afs.ext.base.ProjectCase;
 import com.powsybl.afs.ext.base.ScriptType;
-import com.powsybl.client.storage.AppDataClient;
+import com.powsybl.client.storage.StorageService;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import io.swagger.annotations.*;
@@ -23,16 +23,16 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RestController
 @RequestMapping(value = "/rest/network")
 @Api(value = "/rest/network", tags = "network")
-@ComponentScan(basePackageClasses = {AppDataClient.class, NetworkServer.class})
+@ComponentScan(basePackageClasses = {StorageService.class, NetworkServer.class})
 public class NetworkServer {
 
     public static final String API_VERSION = "v1";
 
     @Autowired
-    private AppDataClient appDataClient;
+    private StorageService service;
 
     private ProjectCase getProjectCase(String fileSystemName, String nodeId) {
-        return (ProjectCase) appDataClient.getFileSystem(fileSystemName)
+        return (ProjectCase) service.getFileSystem(fileSystemName)
                                           .findProjectFile(nodeId, ProjectFile.class);
     }
 
