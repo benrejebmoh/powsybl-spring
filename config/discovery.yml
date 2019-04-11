@@ -1,9 +1,9 @@
 server:
-  port: 8061
+  port: ${DISCOVERY_SERVER_PORT}
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: discovery-server
   client:
     registerWithEureka: false
     fetchRegistry: false

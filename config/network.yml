@@ -1,17 +1,18 @@
 server:
-  port: 8091
+  port: ${NETWORK_SERVER_PORT}
   servlet:
     context-path: /
 
 eureka:
   instance:
-    hostname: localhost
-    port: 8061
+    hostname: discovery-server
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+      defaultZone: http://discovery-server:${DISCOVERY_SERVER_PORT}/eureka/
+    healthcheck:
+      enabled: true
 
 logging:
   pattern: 
