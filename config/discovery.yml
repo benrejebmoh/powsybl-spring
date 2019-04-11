@@ -3,7 +3,7 @@ server:
 
 eureka:
   instance:
-    hostname: ${DISCOVERY_SERVER_IP}
+    hostname: discovery-server
   client:
     registerWithEureka: false
     fetchRegistry: false

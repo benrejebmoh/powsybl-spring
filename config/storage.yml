@@ -5,12 +5,12 @@ server:
 
 eureka:
   instance:
-    hostname: ${STORAGE_SERVER_IP}
+    hostname: storage-server
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${DISCOVERY_SERVER_IP}:${DISCOVERY_SERVER_PORT}/eureka/
+      defaultZone: http://discovery-server:${DISCOVERY_SERVER_PORT}/eureka/
     healthcheck:
       enabled: true
 

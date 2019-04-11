@@ -3,4 +3,4 @@ spring:
     name: storage
   cloud:
     config:
-      uri: http://${CONFIG_SERVER_IP}:${CONFIG_SERVER_PORT}
+      uri: http://config-server:${CONFIG_SERVER_PORT}

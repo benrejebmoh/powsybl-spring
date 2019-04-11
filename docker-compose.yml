@@ -5,16 +5,12 @@ services:
     image: powsybl/powsybl-server-config:latest
     ports:
       - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
-    networks:
-      powsybl-network:
-        ipv4_address: ${CONFIG_SERVER_IP}
     healthcheck:
       test: curl -s http://localhost:${CONFIG_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
     environment:
-      - CONFIG_SERVER_IP
       - CONFIG_SERVER_PORT
     volumes:
       - $HOME/config:/config:Z
@@ -26,18 +22,13 @@ services:
         condition: service_healthy
     ports:
       - ${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}
-    networks:
-      powsybl-network:
-        ipv4_address: ${DISCOVERY_SERVER_IP}
     healthcheck:
       test: curl -s http://localhost:${DISCOVERY_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
     environment:
-      - CONFIG_SERVER_IP
       - CONFIG_SERVER_PORT
-      - DISCOVERY_SERVER_IP
       - DISCOVERY_SERVER_PORT
 
   storage-server:
@@ -47,20 +38,14 @@ services:
         condition: service_healthy
     ports:
       - ${STORAGE_SERVER_PORT}:${STORAGE_SERVER_PORT}
-    networks:
-      powsybl-network:
-        ipv4_address: ${STORAGE_SERVER_IP}
     healthcheck:
       test: curl -s http://localhost:${STORAGE_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
     environment:
-      - CONFIG_SERVER_IP
       - CONFIG_SERVER_PORT
-      - DISCOVERY_SERVER_IP
       - DISCOVERY_SERVER_PORT
-      - STORAGE_SERVER_IP
       - STORAGE_SERVER_PORT
     volumes:
       - $HOME/storage:/storage:Z
@@ -73,26 +58,13 @@ services:
         condition: service_healthy
     ports:
       - ${NETWORK_SERVER_PORT}:${NETWORK_SERVER_PORT}
-    networks:
-      powsybl-network:
-        ipv4_address: ${NETWORK_SERVER_IP}
     healthcheck:
       test: curl -s http://localhost:${NETWORK_SERVER_PORT}/actuator/health 2>&1 | grep UP
       interval: 5s
       timeout: 5s
       retries: 3
     environment:
-      - CONFIG_SERVER_IP
       - CONFIG_SERVER_PORT
-      - DISCOVERY_SERVER_IP
       - DISCOVERY_SERVER_PORT
-      - NETWORK_SERVER_IP
       - NETWORK_SERVER_PORT
 
-networks:
-  powsybl-network:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.100.0/24
